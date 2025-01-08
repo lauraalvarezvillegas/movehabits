@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MoveHabits</string>
+
+    <string name="login_email_text">Email</string>
+    <string name="login_password_text">Contraseña</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login_in">Acceder</string>
+
+
+
+
+
 </resources>

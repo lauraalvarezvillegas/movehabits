@@ -7,6 +7,11 @@
     <string name="login_in_text">Acceder</string>
     <string name="sing_up_text">Regístrate aquí</string>
 
+    <string name="name_text">Nombre</string>
+    <string name="surname_text">Apellidos</string>
+    <string name="confirm_password_text">Repite la contraseña</string>
+
+
 
 
 

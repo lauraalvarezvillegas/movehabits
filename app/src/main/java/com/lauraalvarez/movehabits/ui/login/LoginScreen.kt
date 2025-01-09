@@ -168,7 +168,7 @@ fun LoginButton(isEnabled: Boolean, onLoginSelected: () -> Unit) {
 @Composable
 fun RegisterButton() {
     Button(
-        onClick = {}, modifier = Modifier
+        onClick = { }, modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
         colors = ButtonDefaults.buttonColors(

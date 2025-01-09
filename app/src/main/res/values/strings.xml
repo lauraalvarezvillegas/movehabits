@@ -3,8 +3,10 @@
 
     <string name="login_email_text">Email</string>
     <string name="login_password_text">Contraseña</string>
-    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
-    <string name="login_in">Acceder</string>
+    <string name="forgot_password_text">¿Olvidaste tu contraseña?</string>
+    <string name="login_in_text">Acceder</string>
+    <string name="sing_up_text">Regístrate aquí</string>
+
 
 
 

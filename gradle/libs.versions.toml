@@ -11,6 +11,8 @@ composeBom = "2024.04.01"
 runtime-livedata = "1.7.0"
 navigation = "2.8.5"
 serialization-json = "1.6.3"
+hiltVersion = "2.51.1"
+hiltNavigationVersion = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -30,10 +32,16 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtime-livedata" }
 androidx-navigation-compose = {module = "androidx.navigation:navigation-compose", version.ref ="navigation"}
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltVersion" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationVersion" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hiltVersion" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+hilt-application = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
 

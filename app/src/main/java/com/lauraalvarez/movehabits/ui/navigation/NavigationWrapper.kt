@@ -28,7 +28,7 @@ fun NavigationWrapper() {
             HomeScreen()
         }
         composable<Register> {
-            //SignUpScreen()
+            SignUpScreen()
         }
     }
 }

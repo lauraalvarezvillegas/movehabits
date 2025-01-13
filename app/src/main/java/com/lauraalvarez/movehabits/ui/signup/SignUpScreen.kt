@@ -24,20 +24,32 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.lauraalvarez.movehabits.R
 import com.lauraalvarez.movehabits.ui.login.EmailField
-import com.lauraalvarez.movehabits.ui.login.ForgotPassword
-import com.lauraalvarez.movehabits.ui.login.HeaderImage
-import com.lauraalvarez.movehabits.ui.login.LoginButton
 import com.lauraalvarez.movehabits.ui.login.PasswordField
-import com.lauraalvarez.movehabits.ui.login.RegisterButton
-import kotlinx.coroutines.launch
+
 
 @Composable
-fun SignUpScreen(modifier: Modifier, signUpViewModel: SignUpViewModel) {
+fun SignUpScreen() {
+    val signUpViewModel: SignUpViewModel = hiltViewModel()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        SignUp(
+            Modifier.align(Alignment.Center),
+            signUpViewModel
+            //onNavigateTo
+        )
+    }
 
+}
+
+@Composable
+fun SignUp(modifier: Modifier, signUpViewModel: SignUpViewModel) {
     val name: String by signUpViewModel.name.observeAsState(initial = "")
     val surname: String by signUpViewModel.surname.observeAsState(initial = "")
     val email: String by signUpViewModel.email.observeAsState(initial = "")

@@ -17,17 +17,20 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lauraalvarez.movehabits.R
 import com.lauraalvarez.movehabits.ui.login.EmailField
 import com.lauraalvarez.movehabits.ui.login.PasswordField
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -58,6 +61,8 @@ fun SignUp(modifier: Modifier, signUpViewModel: SignUpViewModel) {
     val signUpEnabled: Boolean by signUpViewModel.signUpEnabled.observeAsState(false)
     val isLoading: Boolean by signUpViewModel.isLoading.observeAsState(false)
 
+    val coroutineScope = rememberCoroutineScope()
+
     if (isLoading) {
         Box(Modifier.fillMaxSize()) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
@@ -67,55 +72,35 @@ fun SignUp(modifier: Modifier, signUpViewModel: SignUpViewModel) {
             modifier = modifier
         ) {
             NameField(name) {
-                signUpViewModel.onSignUpChanged(
-                    it,
-                    surname,
-                    email,
-                    password,
-                    confirmPassword
-                )
+                signUpViewModel.onSignUpChanged(name = it)
             }
+            Spacer(modifier = Modifier.padding(16.dp))
+
             SurnameField(surname) {
-                signUpViewModel.onSignUpChanged(
-                    it,
-                    surname,
-                    email,
-                    password,
-                    confirmPassword
-                )
+                signUpViewModel.onSignUpChanged(surname = it)
             }
             Spacer(modifier = Modifier.padding(16.dp))
+
             EmailField(email) {
-                signUpViewModel.onSignUpChanged(
-                    name,
-                    surname,
-                    it,
-                    password,
-                    confirmPassword
-                )
+                signUpViewModel.onSignUpChanged(email = it)
             }
             Spacer(modifier = Modifier.padding(16.dp))
+
             PasswordField(password) {
-                signUpViewModel.onSignUpChanged(
-                    name,
-                    surname,
-                    email,
-                    it,
-                    confirmPassword
-                )
+                signUpViewModel.onSignUpChanged(password = it)
             }
             Spacer(modifier = Modifier.padding(16.dp))
+
             ConfirmPassword(confirmPassword) {
-                signUpViewModel.onSignUpChanged(
-                    name,
-                    surname,
-                    email,
-                    password,
-                    it
-                )
+                signUpViewModel.onSignUpChanged(confirmPassword = it)
             }
             Spacer(modifier = Modifier.padding(16.dp))
-            SignUpButton()
+
+            SignUpButton(signUpEnabled) {
+                coroutineScope.launch {
+                    signUpViewModel.onRegisterSelected()
+                }
+            }
         }
 
     }
@@ -124,13 +109,14 @@ fun SignUp(modifier: Modifier, signUpViewModel: SignUpViewModel) {
 }
 
 @Composable
-fun SignUpButton() {
+fun SignUpButton(isEnabled: Boolean, onSignUpButtonClicked: () -> Unit) {
     Button(
-        onClick = { }, modifier = Modifier
+        onClick = { onSignUpButtonClicked() }, modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
+        enabled = isEnabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(R.color.original_blue)
+            containerColor = if (isEnabled) colorResource(R.color.original_blue) else Color.Gray
         )
     )
     {
@@ -143,14 +129,15 @@ fun ConfirmPassword(confirmPassword: String, onTextFieldChanged: (String) -> Uni
     TextField(
         value = confirmPassword,
         onValueChange = { onTextFieldChanged(it) },
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         placeholder = {
             Text(
-                text = stringResource(R.string.name_text),
+                text = stringResource(R.string.confirm_password_text),
                 color = colorResource(id = R.color.original_blue)
             )
         },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        visualTransformation = PasswordVisualTransformation(),
         singleLine = true,
         maxLines = 1,
         textStyle = LocalTextStyle.current.copy(
@@ -165,10 +152,10 @@ fun SurnameField(surname: String, onTextFieldChanged: (String) -> Unit) {
     TextField(
         value = surname,
         onValueChange = { onTextFieldChanged(it) },
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         placeholder = {
             Text(
-                text = stringResource(R.string.name_text),
+                text = stringResource(R.string.surname_text),
                 color = colorResource(id = R.color.original_blue)
             )
         },
@@ -187,7 +174,7 @@ fun NameField(name: String, onTextFieldChanged: (String) -> Unit) {
     TextField(
         value = name,
         onValueChange = { onTextFieldChanged(it) },
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         placeholder = {
             Text(
                 text = stringResource(R.string.name_text),

@@ -34,20 +34,23 @@ class SignUpViewModel @Inject constructor(// private val signUpUseCase
     val isLoading: LiveData<Boolean> = _isLoading
 
     fun onSignUpChanged(
-        name: String,
-        surname: String,
-        email: String,
-        password: String,
-        confirmPassword: String
+        name: String? = null,
+        surname: String? = null,
+        email: String? = null,
+        password: String? = null,
+        confirmPassword: String? = null
     ) {
-        _email.value = email
-        _password.value = password
-        _signUpEnabled.value =
-            isValidEmail(email) && isValidPassword(name, surname, password) && doPasswordsMatch(
-                password,
-                confirmPassword
-            )
+        _name.value = name ?: _name.value.orEmpty()
+        _surname.value = surname ?: _surname.value.orEmpty()
+        _email.value = email ?: _email.value.orEmpty()
+        _password.value = password ?: _password.value.orEmpty()
+        _confirmPassword.value = confirmPassword ?: _confirmPassword.value.orEmpty()
+
+        _signUpEnabled.value = isValidEmail(_email.value.orEmpty()) &&
+                isValidPassword(_name.value.orEmpty(), _surname.value.orEmpty(), _password.value.orEmpty()) &&
+                doPasswordsMatch(_password.value.orEmpty(), _confirmPassword.value.orEmpty())
     }
+
 
 
     suspend fun onRegisterSelected() {

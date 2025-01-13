@@ -197,7 +197,7 @@ fun RegisterButton(onNavigateToRegister: () -> Unit) {
         )
     )
     {
-        Text(text = stringResource(R.string.sing_up_text), color = Color.White)
+        Text(text = stringResource(R.string.sing_up_here_text), color = Color.White)
     }
 
 }

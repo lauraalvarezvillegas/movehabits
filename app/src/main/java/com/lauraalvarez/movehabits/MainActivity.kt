@@ -16,21 +16,16 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val loginViewModel : LoginViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MoveHabitsTheme {
-                NavigationWrapper()
-                Surface(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    LoginScreen(loginViewModel)
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    NavigationWrapper()
                 }
             }
         }
     }
 }
+

@@ -18,6 +18,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
@@ -37,26 +38,46 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun LoginScreen(loginViewModel: LoginViewModel) {
+fun LoginScreen(
+    loginViewModel: LoginViewModel,
+    onNavigateToHome: () -> Unit,
+    onNavigateToRegister: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
-        Login(Modifier.align(Alignment.Center), loginViewModel)
+        Login(
+            Modifier.align(Alignment.Center),
+            loginViewModel,
+            onNavigateToHome,
+            onNavigateToRegister
+        )
     }
 
 }
 
 @Composable
-fun Login(modifier: Modifier, loginViewModel: LoginViewModel) {
+fun Login(
+    modifier: Modifier, loginViewModel: LoginViewModel, onNavigateToHome: () -> Unit = {},
+    onNavigateToRegister: () -> Unit = {}
+) {
     val email: String by loginViewModel.email.observeAsState(initial = "")
     val password: String by loginViewModel.password.observeAsState(initial = "")
     val loginEnabled: Boolean by loginViewModel.loginEnabled.observeAsState(false)
     val isLoading: Boolean by loginViewModel.isLoading.observeAsState(false)
+    val loginSuccess: Boolean by loginViewModel.loginSuccess.observeAsState(false)
 
     val coroutineScope = rememberCoroutineScope()
+
+    // if login is successful, navigate to home
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess) {
+            onNavigateToHome()
+        }
+    }
 
     if (isLoading) {
         Box(Modifier.fillMaxSize()) {
@@ -80,7 +101,7 @@ fun Login(modifier: Modifier, loginViewModel: LoginViewModel) {
                 }
             }
             Spacer(modifier = Modifier.padding(10.dp))
-            RegisterButton()
+            RegisterButton(onNavigateToRegister)
         }
     }
 
@@ -166,9 +187,9 @@ fun LoginButton(isEnabled: Boolean, onLoginSelected: () -> Unit) {
 }
 
 @Composable
-fun RegisterButton() {
+fun RegisterButton(onNavigateToRegister: () -> Unit) {
     Button(
-        onClick = { }, modifier = Modifier
+        onClick = { onNavigateToRegister() }, modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
         colors = ButtonDefaults.buttonColors(

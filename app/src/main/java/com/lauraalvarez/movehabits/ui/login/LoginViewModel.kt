@@ -25,6 +25,9 @@ class LoginViewModel @Inject constructor(// private val loginUseCase
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _loginSuccess = MutableLiveData<Boolean>()
+    val loginSuccess: LiveData<Boolean> = _loginSuccess
+
     fun onLoginChanged(email: String, password: String) {
         _email.value = email
         _password.value = password
@@ -35,6 +38,7 @@ class LoginViewModel @Inject constructor(// private val loginUseCase
         _isLoading.value = true
         delay(4000)
         _isLoading.value = false
+        _loginSuccess.value = true
     }
 
     private fun isValidEmail(email: String): Boolean =

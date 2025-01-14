@@ -14,6 +14,7 @@ import com.lauraalvarez.movehabits.ui.signup.SignUpScreen
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.lauraalvarez.movehabits.ui.bottombar.CustomBottomBar
+import com.lauraalvarez.movehabits.ui.workouts.WorkoutsScreen
 
 @Composable
 fun NavigationWrapper() {
@@ -47,10 +48,10 @@ fun NavigationWrapper() {
             composable(route = Home::class.simpleName!!) {
                 HomeScreen()
             }
-            /*
+
             composable(route = Workouts::class.simpleName!!) {
                 WorkoutsScreen()
-            }
+            }/*
             composable(route = Goal::class.simpleName!!) {
                 GoalsScreen()
             }

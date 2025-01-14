@@ -16,4 +16,7 @@ object Home
 object Workouts
 
 @Serializable
-object Goals
+object Goal
+
+@Serializable
+object Profile

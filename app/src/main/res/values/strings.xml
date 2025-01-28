@@ -17,6 +17,17 @@
     <string name="new_workout_text">Nuevo entenamiento</string>
     <string name="today_text">Hoy</string>
     <string name="soon_text">Próximamente</string>
+    <string name="exercise_type_strength">Fuerza</string>
+    <string name="exercise_type_cardio">Cardiovascular</string>
+    <string name="classification_upper_body">Tren superior</string>
+    <string name="classification_lower_body">Tren inferior</string>
+    <string name="classification_none">Ninguna</string>
+
+
+
+
+
+
 
 
 

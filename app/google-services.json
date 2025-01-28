@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "735556814340",
+    "project_id": "movehabit-lav",
+    "storage_bucket": "movehabit-lav.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735556814340:android:d3b78e4bd163a82d855751",
+        "android_client_info": {
+          "package_name": "com.lauraalvarez.movehabits"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735556814340-q0mmouimrnfolhl1v1j3hduo5lv3cq04.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADadYp03aPUGi08mvjLfzt9JScDEHneNk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735556814340-m7rv0sjbf27qtmbosf38rd6asss13eg1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735556814340:android:2eafbd400746c985855751",
+        "android_client_info": {
+          "package_name": "com.lav.movehabit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735556814340-q0mmouimrnfolhl1v1j3hduo5lv3cq04.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADadYp03aPUGi08mvjLfzt9JScDEHneNk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735556814340-m7rv0sjbf27qtmbosf38rd6asss13eg1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

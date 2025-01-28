@@ -4,13 +4,13 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.lauraalvarez.movehabits.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
-
 @HiltViewModel
-class LoginViewModel @Inject constructor(// private val loginUseCase
+class LoginViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
     private val _email = MutableLiveData<String>()
@@ -36,15 +36,18 @@ class LoginViewModel @Inject constructor(// private val loginUseCase
 
     suspend fun onLoginSelected() {
         _isLoading.value = true
-        delay(4000)
-        _isLoading.value = false
-        _loginSuccess.value = true
+        try {
+            loginUseCase(_email.value!!, _password.value!!)
+            _loginSuccess.value = true
+        } catch (e: Exception) {
+            _loginSuccess.value = false
+        } finally {
+            _isLoading.value = false
+        }
     }
 
     private fun isValidEmail(email: String): Boolean =
         Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
     private fun isValidPassword(password: String): Boolean = password.length > 6
-
-
 }

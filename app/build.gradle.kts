@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "com.lauraalvarez.movehabits"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -61,7 +61,6 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation (libs.hilt.android)
     implementation (libs.hilt.navigation.compose)
-    //implementation(libs.hilt.android.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,6 +72,7 @@ dependencies {
     //firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlythics)
+    implementation(libs.firebase.auth)
 
 
 }

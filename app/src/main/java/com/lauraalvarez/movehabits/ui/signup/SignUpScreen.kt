@@ -15,6 +15,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
@@ -34,7 +35,9 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(
+    onNavigateToHome: () -> Unit
+) {
     val signUpViewModel: SignUpViewModel = hiltViewModel()
     Box(
         modifier = Modifier
@@ -44,24 +47,30 @@ fun SignUpScreen() {
     ) {
         SignUp(
             Modifier.align(Alignment.Center),
-            signUpViewModel
-            //onNavigateTo
+            signUpViewModel,
+            onNavigateToHome
         )
     }
 
 }
 
 @Composable
-fun SignUp(modifier: Modifier, signUpViewModel: SignUpViewModel) {
+fun SignUp(modifier: Modifier, signUpViewModel: SignUpViewModel, onNavigateToHome: () -> Unit = {}) {
     val name: String by signUpViewModel.name.observeAsState(initial = "")
-    val surname: String by signUpViewModel.surname.observeAsState(initial = "")
     val email: String by signUpViewModel.email.observeAsState(initial = "")
     val password: String by signUpViewModel.password.observeAsState(initial = "")
     val confirmPassword: String by signUpViewModel.confirmPassword.observeAsState(initial = "")
     val signUpEnabled: Boolean by signUpViewModel.signUpEnabled.observeAsState(false)
     val isLoading: Boolean by signUpViewModel.isLoading.observeAsState(false)
+    val signupSuccess: Boolean by signUpViewModel.signUpSuccess.observeAsState(false)
 
     val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(signupSuccess) {
+        if (signupSuccess) {
+            onNavigateToHome()
+        }
+    }
 
     if (isLoading) {
         Box(Modifier.fillMaxSize()) {
@@ -73,11 +82,6 @@ fun SignUp(modifier: Modifier, signUpViewModel: SignUpViewModel) {
         ) {
             NameField(name) {
                 signUpViewModel.onSignUpChanged(name = it)
-            }
-            Spacer(modifier = Modifier.padding(16.dp))
-
-            SurnameField(surname) {
-                signUpViewModel.onSignUpChanged(surname = it)
             }
             Spacer(modifier = Modifier.padding(16.dp))
 
@@ -147,27 +151,6 @@ fun ConfirmPassword(confirmPassword: String, onTextFieldChanged: (String) -> Uni
     )
 }
 
-@Composable
-fun SurnameField(surname: String, onTextFieldChanged: (String) -> Unit) {
-    TextField(
-        value = surname,
-        onValueChange = { onTextFieldChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = {
-            Text(
-                text = stringResource(R.string.surname_text),
-                color = colorResource(id = R.color.original_blue)
-            )
-        },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        singleLine = true,
-        maxLines = 1,
-        textStyle = LocalTextStyle.current.copy(
-            color = colorResource(id = R.color.original_blue)
-        )
-
-    )
-}
 
 @Composable
 fun NameField(name: String, onTextFieldChanged: (String) -> Unit) {

@@ -43,7 +43,9 @@ fun NavigationWrapper() {
                 )
             }
             composable(route = Register::class.simpleName!!) {
-                SignUpScreen()
+                SignUpScreen(
+                    onNavigateToHome = { navController.navigate(Home::class.simpleName!!) }
+                )
             }
             composable(route = Home::class.simpleName!!) {
                 HomeScreen()

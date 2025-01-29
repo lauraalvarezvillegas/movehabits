@@ -12,6 +12,9 @@
     <string name="login_in_text">Acceder</string>
     <string name="sing_up_here_text">Regístrate aquí</string>
     <string name="sing_up_text">Registrarse</string>
+    <string name="sing_up_error_text">Error al registrar usuario</string>
+
+
 
 
     <string name="name_text">Nombre</string>

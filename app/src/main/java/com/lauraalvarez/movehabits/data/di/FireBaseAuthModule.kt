@@ -1,6 +1,7 @@
 package com.lauraalvarez.movehabits.data.di
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.lauraalvarez.movehabits.data.repository.AuthRepositoryImpl
 import com.lauraalvarez.movehabits.domain.repository.AuthRepository
 import dagger.Module
@@ -16,11 +17,18 @@ object FirebaseModule {
 
     @Provides
     @Singleton
+    fun provideFirebaseFireStore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    @Provides
+    @Singleton
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
     @Singleton
-    fun provideAuthRepository(firebaseAuth: FirebaseAuth): AuthRepository {
-        return AuthRepositoryImpl(firebaseAuth)
+    fun provideAuthRepository(
+        firebaseAuth: FirebaseAuth,
+        firestore: FirebaseFirestore
+    ): AuthRepository {
+        return AuthRepositoryImpl(firebaseAuth, firestore)
     }
 }

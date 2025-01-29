@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">MoveHabits</string>
 
+    <string name="bottom_bar_home_text">Home</string>
+    <string name="bottom_bar_workouts_text">Entrenar</string>
+    <string name="bottom_bar_goals_text">Objetivos</string>
+    <string name="bottom_bar_profile_text">Perfil</string>
+
     <string name="login_email_text">Email</string>
     <string name="login_password_text">Contraseña</string>
     <string name="forgot_password_text">¿Olvidaste tu contraseña?</string>

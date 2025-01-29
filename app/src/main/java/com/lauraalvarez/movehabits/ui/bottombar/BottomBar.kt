@@ -26,15 +26,16 @@ import com.lauraalvarez.movehabits.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.stringResource
 
 
 @Composable
 fun CustomBottomBar(navController: NavHostController) {
     val bottomBarItems = listOf(
-        BottomBarItem("Home", R.drawable.home_icon, Home),
-        BottomBarItem("Workouts", R.drawable.workout_icon, Workouts),
-        BottomBarItem("Goals", R.drawable.goal_icon, Goal),
-        BottomBarItem("Profile", R.drawable.profile_icon, Profile)
+        BottomBarItem(stringResource(R.string.bottom_bar_home_text), R.drawable.home_icon, Home),
+        BottomBarItem(stringResource(R.string.bottom_bar_workouts_text), R.drawable.workout_icon, Workouts),
+        BottomBarItem(stringResource(R.string.bottom_bar_goals_text), R.drawable.goal_icon, Goal),
+        BottomBarItem(stringResource(R.string.bottom_bar_profile_text), R.drawable.profile_icon, Profile)
     )
 
     Box(

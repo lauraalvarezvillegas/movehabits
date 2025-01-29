@@ -41,6 +41,7 @@ class LoginViewModel @Inject constructor(
             _loginSuccess.value = true
         } catch (e: Exception) {
             _loginSuccess.value = false
+            // TODO Error handling
         } finally {
             _isLoading.value = false
         }

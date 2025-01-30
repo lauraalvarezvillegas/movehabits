@@ -46,6 +46,11 @@
     <string name="login_error_user_not_found">No se encontró una cuenta con este correo.</string>
     <string name="login_error_invalid_credentials">Correo o contraseña incorrectos.</string>
     <string name="login_error_generic">Ocurrió un error al intentar iniciar sesión.</string>
+    <string name="enter_email_text">Introduce tu email.</string>
+    <string name="confirm_text">Confirmar</string>
+    <string name="cancel_text">Cancelar</string>
+    <string name="close_text">Cerrar</string>
+    <string name="email_sent_text">"Si hay una cuenta asociada a este email, recibirás un correo con instrucciones para restablecer tu contraseña."</string>
 
 
 </resources>

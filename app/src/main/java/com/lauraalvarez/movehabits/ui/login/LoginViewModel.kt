@@ -4,17 +4,20 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.lauraalvarez.movehabits.R
 import com.lauraalvarez.movehabits.domain.usecase.LoginUseCase
+import com.lauraalvarez.movehabits.domain.usecase.ResetPasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val resetPasswordUseCase: ResetPasswordUseCase
 ) : ViewModel() {
 
     private val _email = MutableLiveData<String>()
@@ -63,6 +66,9 @@ class LoginViewModel @Inject constructor(
             _isLoading.value = false
         }
     }
+
+    suspend fun onForgotPasswordSelected(email: String) = resetPasswordUseCase(email)
+
 
     private fun isValidEmail(email: String): Boolean =
         Patterns.EMAIL_ADDRESS.matcher(email).matches()

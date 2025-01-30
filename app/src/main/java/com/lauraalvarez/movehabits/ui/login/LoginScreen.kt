@@ -21,7 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +38,8 @@ import androidx.compose.ui.unit.sp
 import com.lauraalvarez.movehabits.R
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import com.lauraalvarez.movehabits.ui.widgets.ForgotPasswordDialog
+import com.lauraalvarez.movehabits.ui.widgets.ResponseDialog
 import kotlinx.coroutines.launch
 
 
@@ -71,6 +76,10 @@ fun Login(
     val isLoading: Boolean by loginViewModel.isLoading.observeAsState(false)
     val loginSuccess: Boolean by loginViewModel.loginSuccess.observeAsState(false)
     val errorMessageResId: Int? by loginViewModel.errorKey.observeAsState(null)
+    var showDialog by remember { mutableStateOf(false) }
+    var showResponseDialog by remember { mutableStateOf(false) }
+    var responseMessage by remember { mutableStateOf("") }
+
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -118,18 +127,41 @@ fun Login(
             Spacer(modifier = Modifier.padding(10.dp))
             RegisterButton(onNavigateToRegister)
             Spacer(modifier = Modifier.padding(16.dp))
-            ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
+            ForgotPassword(Modifier.align(Alignment.CenterHorizontally)) {
+                showDialog = true
+            }
 
         }
     }
 
+    if (showDialog) {
+        ForgotPasswordDialog(
+            onDismiss = { showDialog = false },
+            onConfirm = { email ->
+                coroutineScope.launch {
+                    loginViewModel.onForgotPasswordSelected(email)
+                    showResponseDialog = true
+                    showDialog = false
+                }
+            }
+        )
+    }
+
+    if (showResponseDialog) {
+        ResponseDialog(
+            message = stringResource(R.string.email_sent_text),
+            onDismiss = { showResponseDialog = false }
+        )
+    }
+
+
 }
 
 @Composable
-fun ForgotPassword(modifier: Modifier) {
+fun ForgotPassword(modifier: Modifier, onForgotPasswordClick: () -> Unit = {}) {
     Text(
         text = stringResource(R.string.forgot_password_text),
-        modifier = modifier.clickable { },
+        modifier = modifier.clickable { onForgotPasswordClick() },
         color = colorResource(R.color.original_blue),
         fontSize = 14.sp,
         fontWeight = FontWeight.Bold

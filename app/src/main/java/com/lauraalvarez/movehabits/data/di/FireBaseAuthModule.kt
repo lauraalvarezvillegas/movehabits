@@ -1,7 +1,9 @@
 package com.lauraalvarez.movehabits.data.di
 
+import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.lauraalvarez.movehabits.data.preferences.UserPreferences
 import com.lauraalvarez.movehabits.data.repository.AuthRepositoryImpl
 import com.lauraalvarez.movehabits.domain.repository.AuthRepository
 import dagger.Module
@@ -27,8 +29,11 @@ object FirebaseModule {
     @Singleton
     fun provideAuthRepository(
         firebaseAuth: FirebaseAuth,
-        firestore: FirebaseFirestore
+        firestore: FirebaseFirestore,
+        userPreferences: UserPreferences
     ): AuthRepository {
-        return AuthRepositoryImpl(firebaseAuth, firestore)
+        return AuthRepositoryImpl(firebaseAuth, firestore, userPreferences)
     }
 }
+
+

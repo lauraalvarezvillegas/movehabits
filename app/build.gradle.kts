@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.datastore.preferences)
     //hilt
     kapt(libs.hilt.android.compiler)
     implementation (libs.hilt.android)

@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">MoveHabits</string>
 
+    <!-- Bottom Bar -->
     <string name="bottom_bar_home_text">Home</string>
     <string name="bottom_bar_workouts_text">Entrenar</string>
     <string name="bottom_bar_goals_text">Objetivos</string>
     <string name="bottom_bar_profile_text">Perfil</string>
 
+
+    <!-- Login -->
     <string name="login_email_text">Email</string>
     <string name="login_password_text">Contraseña</string>
     <string name="forgot_password_text">¿Olvidaste tu contraseña?</string>
@@ -14,14 +17,12 @@
     <string name="sing_up_text">Registrarse</string>
     <string name="sing_up_error_text">Error al registrar usuario</string>
 
-
-
-
+    <!-- Sign up -->
     <string name="name_text">Nombre</string>
     <string name="surname_text">Apellidos</string>
     <string name="confirm_password_text">Repite la contraseña</string>
 
-
+    <!-- Workouts -->
     <string name="new_workout_text">Nuevo entenamiento</string>
     <string name="today_text">Hoy</string>
     <string name="soon_text">Próximamente</string>
@@ -31,18 +32,17 @@
     <string name="classification_lower_body">Tren inferior</string>
     <string name="classification_none">Ninguna</string>
 
-
-
-
-
-
-
-
-
-
-
-
-
+    <!-- Firebase Auth Error Messages -->
+    <string name="error_email_already_used">El correo electrónico ya está en uso por otra cuenta.</string>
+    <string name="error_invalid_email">El correo electrónico no es válido.</string>
+    <string name="error_weak_password">La contraseña es demasiado débil.</string>
+    <string name="error_wrong_password">La contraseña es incorrecta.</string>
+    <string name="error_user_not_found">No existe una cuenta con este correo electrónico.</string>
+    <string name="error_user_disabled">La cuenta ha sido deshabilitada.</string>
+    <string name="error_too_many_requests">Demasiados intentos fallidos. Inténtalo más tarde.</string>
+    <string name="error_operation_not_allowed">El registro con correo electrónico y contraseña no está habilitado.</string>
+    <string name="error_generic_firebase">Ha ocurrido un error en Firebase, por favor intenta de nuevo.</string>
+    <string name="error_generic">Ha ocurrido un error. Por favor, intenta nuevamente.</string>
 
 
 </resources>

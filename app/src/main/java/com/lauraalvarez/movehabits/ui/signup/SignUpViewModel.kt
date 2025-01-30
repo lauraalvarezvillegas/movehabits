@@ -14,6 +14,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.auth.FirebaseAuthException
+
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase
@@ -63,32 +68,30 @@ class SignUpViewModel @Inject constructor(
                 doPasswordsMatch(_password.value.orEmpty(), _confirmPassword.value.orEmpty())
     }
 
-    fun onRegisterSelected() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            try {
-                val user = signUpUseCase.execute(
-                    name = _name.value.orEmpty(),
-                    email = _email.value.orEmpty(),
-                    password = _password.value.orEmpty()
-                )
-                if (user != null) {
-                    _registeredUser.value = user
-                    _signUpSuccess.value = true
-                    _errorKey.value = null
-                } else {
-                    _signUpSuccess.value = false
-                    _errorKey.value = R.string.sing_up_error_text
-                }
-            } catch (e: Exception) {
-                _signUpSuccess.value = false
-                _errorKey.value = R.string.sing_up_error_text
-            } finally {
-                _isLoading.value = false
-            }
+    suspend fun onRegisterSelected() {
+        _isLoading.value = true
+        try {
+            val user = signUpUseCase.execute(
+                name = _name.value.orEmpty(),
+                email = _email.value.orEmpty(),
+                password = _password.value.orEmpty()
+            )
+            _signUpSuccess.value = user != null
+            _errorKey.value = null
+        } catch (e: FirebaseAuthUserCollisionException) {
+            _errorKey.value = R.string.error_email_already_used
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            _errorKey.value = R.string.error_invalid_email
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            _errorKey.value = R.string.error_weak_password
+        } catch (e: FirebaseAuthException) {
+            _errorKey.value = R.string.error_generic_firebase
+        } catch (e: Exception) {
+            _errorKey.value = R.string.error_generic
+        } finally {
+            _isLoading.value = false
         }
     }
-
 
 
     private fun isValidEmail(email: String): Boolean =

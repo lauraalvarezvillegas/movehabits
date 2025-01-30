@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -26,7 +27,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lauraalvarez.movehabits.R
 import com.lauraalvarez.movehabits.ui.login.EmailField
@@ -63,6 +66,7 @@ fun SignUp(modifier: Modifier, signUpViewModel: SignUpViewModel, onNavigateToHom
     val signUpEnabled: Boolean by signUpViewModel.signUpEnabled.observeAsState(false)
     val isLoading: Boolean by signUpViewModel.isLoading.observeAsState(false)
     val signupSuccess: Boolean by signUpViewModel.signUpSuccess.observeAsState(false)
+    val errorMessageResId: Int? by signUpViewModel.errorKey.observeAsState(null)
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -105,12 +109,27 @@ fun SignUp(modifier: Modifier, signUpViewModel: SignUpViewModel, onNavigateToHom
                     signUpViewModel.onRegisterSelected()
                 }
             }
+
+            errorMessageResId?.let { errorResId ->
+                Spacer(modifier = Modifier.padding(top = 16.dp))
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(id = errorResId),
+                        color = Color.Red,
+                        style = LocalTextStyle.current,
+                        fontSize = 13.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+
         }
-
     }
-
-
 }
+
 
 @Composable
 fun SignUpButton(isEnabled: Boolean, onSignUpButtonClicked: () -> Unit) {

@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lauraalvarez.movehabits.R
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.launch
 
 
@@ -69,6 +70,7 @@ fun Login(
     val loginEnabled: Boolean by loginViewModel.loginEnabled.observeAsState(false)
     val isLoading: Boolean by loginViewModel.isLoading.observeAsState(false)
     val loginSuccess: Boolean by loginViewModel.loginSuccess.observeAsState(false)
+    val errorMessageResId: Int? by loginViewModel.errorKey.observeAsState(null)
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -92,8 +94,21 @@ fun Login(
             EmailField(email) { loginViewModel.onLoginChanged(it, password) }
             Spacer(modifier = Modifier.padding(16.dp))
             PasswordField(password) { loginViewModel.onLoginChanged(email, it) }
-            Spacer(modifier = Modifier.padding(16.dp))
-            ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
+            errorMessageResId?.let { errorResId ->
+                Spacer(modifier = Modifier.padding(top = 16.dp))
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(id = errorResId),
+                        color = Color.Red,
+                        style = LocalTextStyle.current,
+                        fontSize = 13.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
             Spacer(modifier = Modifier.padding(16.dp))
             LoginButton(loginEnabled) {
                 coroutineScope.launch {
@@ -102,6 +117,9 @@ fun Login(
             }
             Spacer(modifier = Modifier.padding(10.dp))
             RegisterButton(onNavigateToRegister)
+            Spacer(modifier = Modifier.padding(16.dp))
+            ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
+
         }
     }
 

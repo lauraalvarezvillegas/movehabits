@@ -4,6 +4,10 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.lauraalvarez.movehabits.R
 import com.lauraalvarez.movehabits.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -28,6 +32,9 @@ class LoginViewModel @Inject constructor(
     private val _loginSuccess = MutableLiveData<Boolean>()
     val loginSuccess: LiveData<Boolean> = _loginSuccess
 
+    private val _errorKey = MutableLiveData<Int?>()
+    val errorKey: LiveData<Int?> = _errorKey
+
     fun onLoginChanged(email: String, password: String) {
         _email.value = email
         _password.value = password
@@ -36,12 +43,22 @@ class LoginViewModel @Inject constructor(
 
     suspend fun onLoginSelected() {
         _isLoading.value = true
+        _errorKey.value = null
         try {
             loginUseCase(_email.value!!, _password.value!!)
             _loginSuccess.value = true
+        } catch (e: FirebaseAuthInvalidUserException) {
+            _loginSuccess.value = false
+            _errorKey.value = R.string.login_error_user_not_found
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            _loginSuccess.value = false
+            _errorKey.value = R.string.login_error_invalid_credentials
+        } catch (e: FirebaseAuthException) {
+            _loginSuccess.value = false
+            _errorKey.value = R.string.login_error_generic
         } catch (e: Exception) {
             _loginSuccess.value = false
-            // TODO Error handling
+            _errorKey.value = R.string.login_error_generic
         } finally {
             _isLoading.value = false
         }

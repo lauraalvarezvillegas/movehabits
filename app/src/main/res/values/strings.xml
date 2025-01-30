@@ -43,6 +43,9 @@
     <string name="error_operation_not_allowed">El registro con correo electrónico y contraseña no está habilitado.</string>
     <string name="error_generic_firebase">Ha ocurrido un error en Firebase, por favor intenta de nuevo.</string>
     <string name="error_generic">Ha ocurrido un error. Por favor, intenta nuevamente.</string>
+    <string name="login_error_user_not_found">No se encontró una cuenta con este correo.</string>
+    <string name="login_error_invalid_credentials">Correo o contraseña incorrectos.</string>
+    <string name="login_error_generic">Ocurrió un error al intentar iniciar sesión.</string>
 
 
 </resources>

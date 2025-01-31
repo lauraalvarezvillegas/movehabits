@@ -1,16 +1,12 @@
 package com.lauraalvarez.movehabits.data.model
 
 data class WorkoutExercise(
-    var workoutExercideId: String,
-    var exerciseId : String,
-    var secDuration : Int,
-    var workoutId: String,
-    var exerciseName: String,
-    var weight: Float,
-    var repetitions: Int,
-    var setsNumber: Int,
-    var setsCompleted: Int,
-    var completed: Boolean
-
-
+    val exerciseId: String = "",
+    val exerciseName: String = "",
+    val sets: Int = 0,
+    val repetitions: Int = 0,
+    val weight: Int = 0,
+    val durationSec: Int = 0,
+    val completedSets: Int = 0,
+    val completed: Boolean = false
 )

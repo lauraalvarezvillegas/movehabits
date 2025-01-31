@@ -51,6 +51,10 @@
     <string name="cancel_text">Cancelar</string>
     <string name="close_text">Cerrar</string>
     <string name="email_sent_text">"Si hay una cuenta asociada a este email, recibirás un correo con instrucciones para restablecer tu contraseña."</string>
+    <string name="strength_training_icon">Icono de entrenamiento de fuerza</string>
+    <string name="cardio_training_icon">Icono de entrenamiento cardiovascular</string>
+
+
 
 
 </resources>

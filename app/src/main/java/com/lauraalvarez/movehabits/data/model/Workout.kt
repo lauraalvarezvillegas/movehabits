@@ -1,13 +1,14 @@
 package com.lauraalvarez.movehabits.data.model
 
+import com.google.firebase.Timestamp
+
 
 data class Workout(
-    var id: String? = null,
-    var idUsuario: String? = null,
-    //var fechaHora: Timestamp? = null, // time stamp de firebase
-    var duracionTotalSeg: Long = 0L,
-    var tipo: String? = null,
-    var descansoSeg: Long = 0L,
-    var ejercicios: ArrayList<WorkoutExercise> = ArrayList(),
-    var completado: Boolean? = null
+    val userId: String = "",
+    val type: String = "",
+    val dateTime: Timestamp = Timestamp.now(),
+    val totalDurationSec: Int = 0,
+    val restSec: Int = 0,
+    val completed: Boolean = false,
+    val exercises: List<Exercise> = emptyList()
 )

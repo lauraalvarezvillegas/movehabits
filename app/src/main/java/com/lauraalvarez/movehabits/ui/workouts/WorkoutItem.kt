@@ -25,15 +25,15 @@ import com.lauraalvarez.movehabits.data.model.Workout
 import com.lauraalvarez.movehabits.utils.DateTimeUtils.formatFirebaseDate
 import com.lauraalvarez.movehabits.utils.DateTimeUtils.formatFirebaseTime
 import java.util.Date
-
 @Composable
 fun WorkoutItem(workout: Workout) {
     Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+        shape = RoundedCornerShape(26.dp),
         modifier = Modifier
             .size(width = 350.dp, height = 100.dp)
             .border(
-                0.5.dp,
+                1.dp,
                 color = colorResource(id = R.color.original_blue),
                 RoundedCornerShape(26.dp)
             ),
@@ -47,13 +47,13 @@ fun WorkoutItem(workout: Workout) {
         ) {
             Icon(
                 painter = painterResource(
-                    id = if (workout.type == ExerciseType.STRENGTH.name)
+                    id = if (workout.type.name == ExerciseType.STRENGTH.name)
                         R.drawable.strength_icon
                     else
                         R.drawable.running_icon
                 ),
                 contentDescription = stringResource(
-                    if (workout.type == ExerciseType.STRENGTH.name)
+                    if (workout.type.name == ExerciseType.STRENGTH.name)
                         R.string.strength_training_icon
                     else
                         R.string.cardio_training_icon
@@ -92,12 +92,13 @@ fun WorkoutItem(workout: Workout) {
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun WorkoutItemPreview() {
     val sampleWorkout = Workout(
         userId = "123",
-        type = ExerciseType.CARDIO.name,
+        type = ExerciseType.CARDIO,
         dateTime = Timestamp(Date()),
         totalDurationSec = 3600,
         restSec = 60,

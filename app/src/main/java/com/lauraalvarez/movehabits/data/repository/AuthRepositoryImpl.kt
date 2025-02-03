@@ -63,8 +63,6 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun logout() {
         firebaseAuth.signOut()
-
-        // Eliminar usuario de DataStore
         CoroutineScope(Dispatchers.IO).launch {
             userPreferences.clearUser()
         }

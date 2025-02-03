@@ -4,11 +4,18 @@ import com.lauraalvarez.movehabits.data.enums.ExerciseClassification
 import com.lauraalvarez.movehabits.data.enums.ExerciseType
 
 data class Exercise(
-    var exerciseId: Int,
-    var exercisename: String,
-    var type : ExerciseType,
-    var classification : ExerciseClassification,
-    var img : String
+    var exerciseId: Int = 0,
+    var exercisename: String = "",
+    var type: ExerciseType = ExerciseType.STRENGTH,
+    var classification: ExerciseClassification = ExerciseClassification.NONE,
+    var img: String = ""
+) {
+    constructor() : this(
+        exerciseId = 0,
+        exercisename = "",
+        type = ExerciseType.STRENGTH,
+        classification = ExerciseClassification.NONE,
+        img = ""
+    )
+}
 
-
-)

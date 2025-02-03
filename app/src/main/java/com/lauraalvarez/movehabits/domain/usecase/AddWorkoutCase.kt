@@ -4,11 +4,11 @@ import com.lauraalvarez.movehabits.data.model.Workout
 import com.lauraalvarez.movehabits.domain.repository.WorkoutRepository
 import javax.inject.Inject
 
-class GetWorkoutsUseCase @Inject constructor(
+class AddWorkoutUseCase @Inject constructor(
     private val workoutRepository: WorkoutRepository
 ) {
 
-    suspend fun execute(userId: String): List<Workout> {
-        return workoutRepository.getWorkouts(userId)
+    suspend fun execute(workout: Workout) {
+        workoutRepository.addWorkout(workout)
     }
 }

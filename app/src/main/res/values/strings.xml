@@ -28,9 +28,14 @@
     <string name="soon_text">Próximamente</string>
     <string name="exercise_type_strength">Fuerza</string>
     <string name="exercise_type_cardio">Cardiovascular</string>
+    <string name="exercise_type_cardio_short">Cardio</string>
     <string name="classification_upper_body">Tren superior</string>
     <string name="classification_lower_body">Tren inferior</string>
-    <string name="classification_none">Ninguna</string>
+    <string name="classification_none">Ninguna</string>>
+    <string name="select_date">Selecciona la fecha</string>
+    <string name="select_time">Selecciona la hora</string>
+    <string name="select_type">Selecciona el tipo:</string>
+
 
     <!-- Firebase Auth Error Messages -->
     <string name="error_email_already_used">El correo electrónico ya está en uso por otra cuenta.</string>
@@ -50,12 +55,15 @@
     <string name="confirm_text">Confirmar</string>
     <string name="cancel_text">Cancelar</string>
     <string name="close_text">Cerrar</string>
+    <string name="add_text">Añadir</string>
     <string name="email_sent_text">"Si hay una cuenta asociada a este email, recibirás un correo con instrucciones para restablecer tu contraseña."</string>
 
     <!-- Descriptions -->
     <string name="strength_training_icon">Icono de entrenamiento de fuerza</string>
     <string name="cardio_training_icon">Icono de entrenamiento cardiovascular</string>
     <string name="finished_workout_icon">Icono de entrenamiento finalizado</string>
+
+
 
 
 

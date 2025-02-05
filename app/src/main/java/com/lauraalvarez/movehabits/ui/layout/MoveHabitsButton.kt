@@ -14,17 +14,15 @@ import androidx.compose.ui.unit.dp
 import com.lauraalvarez.movehabits.R
 
 @Composable
-fun MoveHabitsButton(isEnabled: Boolean, onSignUpButtonClicked: () -> Unit) {
+fun MoveHabitsButton(modifier: Modifier, text: String, isEnabled: Boolean, onButtonClicked: () -> Unit) {
     Button(
-        onClick = { onSignUpButtonClicked() }, modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
+        onClick = { onButtonClicked() }, modifier = modifier,
         enabled = isEnabled,
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isEnabled) colorResource(R.color.original_blue) else Color.Gray
         )
     )
     {
-        Text(text = stringResource(R.string.new_workout_text), color = Color.White)
+        Text(text = text, color = Color.White)
     }
 }

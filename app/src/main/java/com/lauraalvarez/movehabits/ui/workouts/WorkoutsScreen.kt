@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
@@ -16,8 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lauraalvarez.movehabits.R
 import com.lauraalvarez.movehabits.data.model.Workout
 import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
 import com.lauraalvarez.movehabits.ui.widgets.WorkoutTypeDialog
@@ -71,7 +74,11 @@ fun Workouts(
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
-        MoveHabitsButton(true) {
+        MoveHabitsButton(
+            Modifier
+                .fillMaxWidth()
+                .height(50.dp), stringResource(R.string.login_in_text), true
+        ) {
             onAddWorkout()
         }
 

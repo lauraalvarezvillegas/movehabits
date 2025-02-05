@@ -6,7 +6,7 @@ import com.lauraalvarez.movehabits.data.enums.ExerciseType
 data class Exercise(
     var exerciseId: Int = 0,
     var exercisename: String = "",
-    var type: ExerciseType = ExerciseType.STRENGTH,
+    var type: ExerciseType,
     var classification: ExerciseClassification = ExerciseClassification.NONE,
     var img: String = ""
 ) {

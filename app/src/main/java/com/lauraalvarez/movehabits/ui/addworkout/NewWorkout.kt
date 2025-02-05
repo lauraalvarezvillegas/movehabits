@@ -1,7 +1,5 @@
 package com.lauraalvarez.movehabits.ui.addworkout
 
-import android.app.TimePickerDialog
-import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,20 +30,15 @@ import com.lauraalvarez.movehabits.data.enums.ExerciseType
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DatePickerState
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
-import androidx.compose.material3.Surface
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.ui.draw.alpha
@@ -54,14 +47,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.google.firebase.Timestamp
+import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
 import com.lauraalvarez.movehabits.ui.widgets.DatePickerMaterialTheme
 import com.lauraalvarez.movehabits.ui.widgets.TimePickerMaterialTheme
 import com.lauraalvarez.movehabits.utils.DateTimeUtils
 import org.joda.time.DateTime
-import java.time.Instant
-import java.time.ZoneId
-import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -121,13 +113,6 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
         }
     }
 
-    fun getDisabledHours(): List<Int> {
-        return if (selectedDate == LocalDate.now()) {
-            (0 until now.hourOfDay).toList()
-        } else {
-            emptyList()
-        }
-    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -203,67 +188,111 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
                     )
                 }
             }
-        }
 
-        if (showDatePickerDialog) {
-            DatePickerDialog(
-                onDismissRequest = { showDatePickerDialog = false },
-                confirmButton = {
-                    Button(colors = (ButtonDefaults.textButtonColors(
-                        containerColor = colorResource(R.color.original_blue),
-                        contentColor = colorResource(R.color.white)
-                    )
-                            ), onClick = {
-                        val selectedMillis = datePickerState.selectedDateMillis
-                        if (selectedMillis != null) {
-                            val selected = LocalDate(datePickerState.selectedDateMillis)
+            Spacer(modifier = Modifier.height(30.dp))
 
-                            if (!selected.isBefore(today) || selected.isEqual(today)) {
-                                selectedDate = selected
-                                selectedTime = null
-                                showDatePickerDialog = false
-                            }
-                        }
-                    }) {
-                        Text(text = stringResource(R.string.confirm_text))
-                    }
-                }
+            //exercise list
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Absolute.Left
             ) {
-                DatePickerMaterialTheme(datePickerState)
+                Text(
+                    text = stringResource(R.string.exercises_text),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 20.sp,
+                    color = colorResource(R.color.original_blue),
+                    modifier = Modifier.padding(start = 35.dp, top = 14.dp)
+                )
+
+                MoveHabitsButton(
+                    Modifier
+                        .width(190.dp)
+                        .height(50.dp)
+                        .padding(start = 55.dp),
+                    stringResource(R.string.add_text),
+                    true,
+                    onAddExerciseClicked()
+                )
+
+
             }
-        }
 
-
-        if (showTimePickerDialog) {
-            DatePickerDialog(
-                onDismissRequest = { showTimePickerDialog = false },
-                confirmButton = {
-                    val selectedHour = timePickerState.hour
-                    val selectedMinute = timePickerState.minute
-                    val isValid = isSelectableTime(selectedHour, selectedMinute)
-
-                    Button(
-                        colors = (ButtonDefaults.textButtonColors(
-                            containerColor = colorResource(R.color.original_blue),
-                            contentColor = colorResource(R.color.white)
-                        )
-                                ),
-                        onClick = {
-                            if (isValid) {
-                                selectedTime = LocalTime(selectedHour, selectedMinute)
-                                showTimePickerDialog = false
-                            }
-                        },
-                        enabled = isValid
-                    ) {
-                        Text(text = stringResource(R.string.confirm_text))
-                    }
-                }
+            LazyColumn(
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 16.dp)
+                    .fillMaxWidth()
             ) {
-                TimePickerMaterialTheme(timePickerState)
+                //items(workoutTypes) { type ->
+
             }
         }
     }
+
+    if (showDatePickerDialog) {
+        DatePickerDialog(
+            onDismissRequest = { showDatePickerDialog = false },
+            confirmButton = {
+                Button(colors = (ButtonDefaults.textButtonColors(
+                    containerColor = colorResource(R.color.original_blue),
+                    contentColor = colorResource(R.color.white)
+                )
+                        ), onClick = {
+                    val selectedMillis = datePickerState.selectedDateMillis
+                    if (selectedMillis != null) {
+                        val selected = LocalDate(datePickerState.selectedDateMillis)
+
+                        if (!selected.isBefore(today) || selected.isEqual(today)) {
+                            selectedDate = selected
+                            selectedTime = null
+                            showDatePickerDialog = false
+                        }
+                    }
+                }) {
+                    Text(text = stringResource(R.string.confirm_text))
+                }
+            }
+        ) {
+            DatePickerMaterialTheme(datePickerState)
+        }
+    }
+
+
+    if (showTimePickerDialog) {
+        DatePickerDialog(
+            onDismissRequest = { showTimePickerDialog = false },
+            confirmButton = {
+                val selectedHour = timePickerState.hour
+                val selectedMinute = timePickerState.minute
+                val isValid = isSelectableTime(selectedHour, selectedMinute)
+
+                Button(
+                    colors = (ButtonDefaults.textButtonColors(
+                        containerColor = colorResource(R.color.original_blue),
+                        contentColor = colorResource(R.color.white)
+                    )
+                            ),
+                    onClick = {
+                        if (isValid) {
+                            selectedTime = LocalTime(selectedHour, selectedMinute)
+                            showTimePickerDialog = false
+                        }
+                    },
+                    enabled = isValid
+                ) {
+                    Text(text = stringResource(R.string.confirm_text))
+                }
+            }
+        ) {
+            TimePickerMaterialTheme(timePickerState)
+        }
+    }
+
+
+}
+
+fun onAddExerciseClicked(): () -> Unit = {
+
 }
 
 @Composable

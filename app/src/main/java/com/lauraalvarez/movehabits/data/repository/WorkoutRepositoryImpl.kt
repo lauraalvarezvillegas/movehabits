@@ -1,13 +1,11 @@
 package com.lauraalvarez.movehabits.data.repository
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.lauraalvarez.movehabits.data.model.Workout
 import com.lauraalvarez.movehabits.domain.repository.WorkoutRepository
 import com.lauraalvarez.movehabits.utils.FireStoreCollections
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
-import kotlin.math.log
 
 class WorkoutRepositoryImpl @Inject constructor(
     private val db: FirebaseFirestore
@@ -22,7 +20,7 @@ class WorkoutRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getWorkouts(userId: String): List<Workout> {
-        val snapshot = db.collection("workouts")
+        val snapshot = db.collection(FireStoreCollections.WORKOUTS)
             .whereEqualTo("userId", userId)
             .get()
             .await()

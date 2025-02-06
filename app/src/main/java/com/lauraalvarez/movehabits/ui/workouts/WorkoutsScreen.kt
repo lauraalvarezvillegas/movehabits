@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -47,7 +47,6 @@ fun WorkoutsScreen() {
     ) {
         Workouts(
             modifier = Modifier.align(Alignment.TopCenter),
-            workoutsViewModel = workoutsViewModel,
             workouts = workouts,
             onAddWorkout = { showDialog = true }
         )
@@ -67,7 +66,6 @@ fun WorkoutsScreen() {
 @Composable
 fun Workouts(
     modifier: Modifier,
-    workoutsViewModel: WorkoutsViewModel,
     workouts: List<Workout>,
     onAddWorkout: () -> Unit,
 ) {
@@ -82,11 +80,11 @@ fun Workouts(
             onAddWorkout()
         }
 
-        LazyRow(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center
         ) {
             items(workouts.size) { index ->
                 WorkoutItem(workouts[index])

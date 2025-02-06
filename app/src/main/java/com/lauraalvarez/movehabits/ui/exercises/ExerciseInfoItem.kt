@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,11 +30,12 @@ import com.lauraalvarez.movehabits.data.model.Exercise
 import coil.compose.AsyncImage
 
 @Composable
-fun ExerciseInfoItem(exercise: Exercise) {
+fun ExerciseInfoItem(exercise: Exercise, onAddExercise: (Exercise) -> Unit) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         shape = RoundedCornerShape(26.dp),
         modifier = Modifier
+            .padding(vertical = 10.dp)
             .size(width = 350.dp, height = 120.dp)
             .border(
                 1.dp,
@@ -57,26 +59,29 @@ fun ExerciseInfoItem(exercise: Exercise) {
 
 
             Text(
-                text = exercise.exercisename, fontSize = 16.sp, modifier = Modifier
+                text = exercise.exercisename, fontSize = 16.sp, maxLines = 3, modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 16.dp)
             )
 
+            IconButton(onClick = { onAddExercise(exercise) }) {
+                Icon(
+                    painter = painterResource(
+                        R.drawable.add_icon
+                    ),
+                    contentDescription = stringResource(
+                        R.string.add_exercise_icon
+                    ),
+                    modifier = Modifier
+                        .size(40.dp)
+                        .align(Alignment.CenterVertically)
+                )
+            }
 
-            Icon(
-                painter = painterResource(
-                    R.drawable.add_icon
-                ),
-                contentDescription = stringResource(
-                    R.string.add_exercise_icon
-                ),
-                modifier = Modifier
-                    .size(40.dp)
-                    .align(Alignment.CenterVertically)
-            )
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -88,8 +93,8 @@ fun PreviewExerciseInfoItem() {
             type = ExerciseType.STRENGTH,
             classification = ExerciseClassification.LOWER_BODY,
             img = "https://firebasestorage.googleapis.com/v0/b/movehabit-lav.appspot.com/o/Tren%20inferior%2FSentadillabarra.png?alt=media&token=b66f208b-981f-41f4-afb4-1023975156e1"
-
-        )
+        ),
+        onAddExercise = {}
     )
 }
 

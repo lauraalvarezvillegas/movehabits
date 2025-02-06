@@ -120,7 +120,7 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TopBar(
-                onCloseClick = { /* Lógica para cerrar pantalla */ },
+                onCloseClick = { /*TODO:  Lógica para cerrar pantalla */ },
                 selectedWorkoutType = selectedWorkoutType
             )
 

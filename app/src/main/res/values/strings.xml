@@ -63,10 +63,24 @@
     <string name="add_text">Añadir</string>
     <string name="email_sent_text">"Si hay una cuenta asociada a este email, recibirás un correo con instrucciones para restablecer tu contraseña."</string>
 
+    <!-- Workout Exercise Item  -->
+    <string name="sets_text">Series :</string>
+    <string name="reps_text">Repeticiones :</string>
+    <string name="weight_text">Peso :</string>
+    <string name="kg_text">kg</string>
+
+
+
+
+
+
+
     <!-- Descriptions -->
     <string name="strength_training_icon">Icono de entrenamiento de fuerza</string>
     <string name="cardio_training_icon">Icono de entrenamiento cardiovascular</string>
     <string name="finished_workout_icon">Icono de entrenamiento finalizado</string>
+    <string name="delete_icon">Eliminar ejercicio. Botón</string>
+
 
 
 

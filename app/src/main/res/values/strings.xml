@@ -79,7 +79,12 @@
     <string name="strength_training_icon">Icono de entrenamiento de fuerza</string>
     <string name="cardio_training_icon">Icono de entrenamiento cardiovascular</string>
     <string name="finished_workout_icon">Icono de entrenamiento finalizado</string>
+    <string name="add_exercise_icon">Icono de añadir ejercicio</string>
+
     <string name="delete_icon">Eliminar ejercicio. Botón</string>
+    <string name="img_icon">Imagen de ejercicio:</string>
+
+
 
 
 

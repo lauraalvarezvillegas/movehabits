@@ -32,6 +32,7 @@ import org.joda.time.LocalTime
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -49,9 +50,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.google.firebase.Timestamp
+import com.lauraalvarez.movehabits.data.model.WorkoutExercise
 import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
 import com.lauraalvarez.movehabits.ui.widgets.DatePickerMaterialTheme
 import com.lauraalvarez.movehabits.ui.widgets.TimePickerMaterialTheme
+import com.lauraalvarez.movehabits.ui.workouts.ExerciseAtWorkoutItem
 import com.lauraalvarez.movehabits.utils.DateTimeUtils
 import org.joda.time.DateTime
 
@@ -68,6 +71,9 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
 
     val currentYear = DateTime.now().year
     val todayMillis = DateTime().withTimeAtStartOfDay().millis
+
+    var exercises by remember { mutableStateOf<List<WorkoutExercise>>(emptyList()) }
+
 
 
     val datePickerState = rememberDatePickerState(
@@ -205,6 +211,8 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
                     modifier = Modifier.padding(start = 35.dp, top = 14.dp)
                 )
 
+                /*TODO: pasar parametro de workoutexercise
+
                 MoveHabitsButton(
                     Modifier
                         .width(190.dp)
@@ -212,8 +220,8 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
                         .padding(start = 55.dp),
                     stringResource(R.string.add_text),
                     true,
-                    onAddExerciseClicked()
-                )
+                    onAddExerciseClicked(workoutExercise)
+                )*/
 
 
             }
@@ -223,7 +231,10 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
                     .padding(top = 16.dp, bottom = 16.dp)
                     .fillMaxWidth()
             ) {
-                //items(workoutTypes) { type ->
+                items(exercises) {exercise->
+                    ExerciseAtWorkoutItem(exercise, {})
+
+                }
 
             }
         }
@@ -288,12 +299,15 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
         }
     }
 
+    fun onAddExerciseClicked(newExercise: WorkoutExercise) {
+        exercises = exercises + newExercise
+    }
+
 
 }
 
-fun onAddExerciseClicked(): () -> Unit = {
 
-}
+
 
 @Composable
 fun TopBar(onCloseClick: () -> Unit, selectedWorkoutType: ExerciseType) {
@@ -357,7 +371,7 @@ fun TopBar(onCloseClick: () -> Unit, selectedWorkoutType: ExerciseType) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewWorkoutScreen() {
-    NewWorkoutScreen(selectedWorkoutType = ExerciseType.STRENGTH) // Cambia el tipo según tu necesidad
+    NewWorkoutScreen(selectedWorkoutType = ExerciseType.STRENGTH)
 }
 
 

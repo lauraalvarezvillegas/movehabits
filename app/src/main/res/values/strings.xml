@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MoveHabits</string>
 
+    <string name="navigation_package_route">com.lauraalvarez.movehabits.ui.navigation.</string>
+
+
     <!-- Bottom Bar -->
     <string name="bottom_bar_home_text">Home</string>
     <string name="bottom_bar_workouts_text">Entrenar</string>

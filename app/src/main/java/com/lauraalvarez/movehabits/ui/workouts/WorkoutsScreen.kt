@@ -20,14 +20,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.lauraalvarez.movehabits.R
 import com.lauraalvarez.movehabits.data.model.Workout
+import com.lauraalvarez.movehabits.ui.addworkout.NewWorkoutScreen
 import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
+import com.lauraalvarez.movehabits.ui.navigation.NewWorkout
 import com.lauraalvarez.movehabits.ui.widgets.WorkoutTypeDialog
 
 
 @Composable
-fun WorkoutsScreen() {
+fun WorkoutsScreen(navController: NavController) {
     val workoutsViewModel: WorkoutsViewModel = hiltViewModel()
     val workouts by workoutsViewModel.workouts.collectAsState()
     val userId by workoutsViewModel.userId.collectAsState()
@@ -57,6 +60,7 @@ fun WorkoutsScreen() {
             onDismiss = { showDialog = false },
             onWorkoutSelected = { selectedWorkoutType ->
                 showDialog = false
+                navController.navigate(NewWorkout(type = selectedWorkoutType))
             }
         )
     }

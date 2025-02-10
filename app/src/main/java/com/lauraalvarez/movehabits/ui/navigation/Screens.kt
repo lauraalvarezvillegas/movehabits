@@ -1,22 +1,51 @@
 package com.lauraalvarez.movehabits.ui.navigation
 
-import com.lauraalvarez.movehabits.ui.login.LoginViewModel
+import com.lauraalvarez.movehabits.data.enums.ExerciseType
 import kotlinx.serialization.Serializable
 
-@Serializable
-object Login
+interface Route {
+    val route: String
+}
 
 @Serializable
-object Register
+object Login : Route {
+    override val route = "login"
+}
 
 @Serializable
-object Home
+object Register : Route {
+    override val route = "register"
+}
 
 @Serializable
-object Workouts
+object Home : Route {
+    override val route = "home"
+}
 
 @Serializable
-object Goal
+object Workouts : Route {
+    override val route = "workouts"
+}
 
 @Serializable
-object Profile
+data class NewWorkout(val type: ExerciseType) : Route {
+    override val route = "new_workout/${type.name}"
+}
+
+@Serializable
+object Exercises : Route {
+    override val route = "exercises"
+}
+
+@Serializable
+object Goal : Route {
+    override val route = "goal"
+}
+
+@Serializable
+object Profile : Route {
+    override val route = "profile"
+}
+
+
+

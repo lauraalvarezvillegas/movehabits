@@ -49,9 +49,10 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Timestamp
 import com.lauraalvarez.movehabits.data.model.WorkoutExercise
-import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
 import com.lauraalvarez.movehabits.ui.widgets.DatePickerMaterialTheme
 import com.lauraalvarez.movehabits.ui.widgets.TimePickerMaterialTheme
 import com.lauraalvarez.movehabits.ui.workouts.ExerciseAtWorkoutItem
@@ -60,7 +61,7 @@ import org.joda.time.DateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
+fun NewWorkoutScreen(selectedWorkoutType: ExerciseType, navController: NavController) {
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
     var selectedTime by remember { mutableStateOf<LocalTime?>(null) }
 
@@ -126,7 +127,7 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TopBar(
-                onCloseClick = { /*TODO:  Lógica para cerrar pantalla */ },
+                onCloseClick = {navController.popBackStack() },
                 selectedWorkoutType = selectedWorkoutType
             )
 
@@ -136,7 +137,7 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType) {
                 onClick = { showDatePickerDialog = true },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 20.dp, vertical = 8.dp)
             ) {
                 Row(
                     modifier = Modifier
@@ -371,7 +372,7 @@ fun TopBar(onCloseClick: () -> Unit, selectedWorkoutType: ExerciseType) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewWorkoutScreen() {
-    NewWorkoutScreen(selectedWorkoutType = ExerciseType.STRENGTH)
+    NewWorkoutScreen(selectedWorkoutType = ExerciseType.STRENGTH, navController = rememberNavController())
 }
 
 

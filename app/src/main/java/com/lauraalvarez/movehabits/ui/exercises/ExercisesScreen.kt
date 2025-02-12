@@ -75,7 +75,7 @@ fun Exercises(
     exercises: List<Exercise>,
     onAddExercise: (Exercise) -> Unit
 ) {
-    var selectedClassification by remember { mutableStateOf<ExerciseClassification?>(null) }
+    var selectedClassification by remember { mutableStateOf<ExerciseClassification?>(ExerciseClassification.NONE) }
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
 
@@ -97,7 +97,7 @@ fun Exercises(
                 ) {
                     Text(
                         text = selectedClassification?.getDisplayName(context)
-                            ?: stringResource(R.string.select_type2)
+                            ?: stringResource(R.string.classification_none)
                     )
 
                 }
@@ -115,11 +115,11 @@ fun Exercises(
                             DropdownMenuItem(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(horizontal = 20.dp), // Margen horizontal en los items
+                                    .padding(horizontal = 20.dp),
                                 text = {
                                     Text(
                                         text = classification.getDisplayName(context),
-                                        color = Color.Black // Asegurar que el texto sea visible sobre el fondo blanco
+                                        color = Color.Black
                                     )
                                 },
                                 onClick = {
@@ -133,10 +133,14 @@ fun Exercises(
             }
         }
 
-        // Lista de ejercicios filtrados
-        val filteredExercises = selectedClassification?.let { classification ->
-            exercises.filter { it.classification == classification }
-        } ?: exercises
+        var filteredExercises = exercises
+
+        if(selectedClassification?.equals(ExerciseClassification.NONE) == false) { // if type == upper or type == lower -> filter exercises
+            filteredExercises = selectedClassification?.let { classification ->
+                exercises.filter { it.classification == classification }
+            } ?: exercises
+
+        }
 
         LazyColumn(
             modifier = Modifier

@@ -18,6 +18,7 @@ import androidx.navigation.toRoute
 import com.lauraalvarez.movehabits.R
 import com.lauraalvarez.movehabits.ui.addworkout.NewWorkoutScreen
 import com.lauraalvarez.movehabits.ui.bottombar.CustomBottomBar
+import com.lauraalvarez.movehabits.ui.exercises.ExercisesScreen
 import com.lauraalvarez.movehabits.ui.workouts.WorkoutsScreen
 
 @Composable
@@ -35,7 +36,8 @@ fun NavigationWrapper() {
             if (baseRoute !in listOf(
                     Login::class.simpleName,
                     Register::class.simpleName,
-                    NewWorkout::class.simpleName
+                    NewWorkout::class.simpleName,
+                    Exercises::class.simpleName
                 )
             ) {
                 CustomBottomBar(navController)
@@ -74,6 +76,11 @@ fun NavigationWrapper() {
                     selectedWorkoutType = workout.type,
                     navController
                 )
+            }
+
+            composable<Exercises> { backStackEntry ->
+                val exercises = backStackEntry.toRoute<Exercises>()
+                ExercisesScreen(type = exercises.type)
             }
 
 

@@ -2,7 +2,6 @@ package com.lauraalvarez.movehabits.ui.exercises
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lauraalvarez.movehabits.data.enums.ExerciseType
 import com.lauraalvarez.movehabits.data.model.Exercise
 import com.lauraalvarez.movehabits.domain.usecase.GetExerciseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

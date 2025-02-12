@@ -53,6 +53,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Timestamp
 import com.lauraalvarez.movehabits.data.model.WorkoutExercise
+import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
+import com.lauraalvarez.movehabits.ui.navigation.Exercises
 import com.lauraalvarez.movehabits.ui.widgets.DatePickerMaterialTheme
 import com.lauraalvarez.movehabits.ui.widgets.TimePickerMaterialTheme
 import com.lauraalvarez.movehabits.ui.workouts.ExerciseAtWorkoutItem
@@ -212,17 +214,17 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType, navController: NavContro
                     modifier = Modifier.padding(start = 35.dp, top = 14.dp)
                 )
 
-                /*TODO: pasar parametro de workoutexercise
-
                 MoveHabitsButton(
                     Modifier
-                        .width(190.dp)
+                        .width(220.dp)
                         .height(50.dp)
                         .padding(start = 55.dp),
                     stringResource(R.string.add_text),
                     true,
-                    onAddExerciseClicked(workoutExercise)
-                )*/
+                     onButtonClicked = { navController.navigate(Exercises(ExerciseType.STRENGTH))
+
+                     }
+                )
 
 
             }
@@ -353,7 +355,7 @@ fun TopBar(onCloseClick: () -> Unit, selectedWorkoutType: ExerciseType) {
             }
 
             Text(
-                text = "Tipo: ${selectedWorkoutType.getDisplayName(LocalContext.current)}",
+                text = "Tipo: ${selectedWorkoutType.name}",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .fillMaxWidth()

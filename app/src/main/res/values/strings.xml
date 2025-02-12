@@ -34,13 +34,12 @@
     <string name="exercise_type_cardio_short">Cardio</string>
     <string name="classification_upper_body">Tren superior</string>
     <string name="classification_lower_body">Tren inferior</string>
-    <string name="classification_none">Ninguna</string>>
 
     <!-- New Workout -->
     <string name="select_date">Selecciona la fecha</string>
     <string name="select_time">Selecciona la hora</string>
     <string name="select_type">Selecciona el tipo:</string>
-    <string name="select_type2">Tren inferior / Tren superior</string>
+    <string name="classification_none">Tren inferior / Tren superior</string>
 
     <string name="exercises_text">Ejercicios</string>
 

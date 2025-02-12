@@ -25,6 +25,6 @@ object Profile
 data class NewWorkout(val type: ExerciseType)
 
 @Serializable
-object Exercises
+data class Exercises(val type: ExerciseType)
 
 

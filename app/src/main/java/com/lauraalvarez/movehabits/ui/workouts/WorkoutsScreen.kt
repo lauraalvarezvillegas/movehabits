@@ -23,7 +23,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.lauraalvarez.movehabits.R
 import com.lauraalvarez.movehabits.data.model.Workout
-import com.lauraalvarez.movehabits.ui.addworkout.NewWorkoutScreen
 import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
 import com.lauraalvarez.movehabits.ui.navigation.NewWorkout
 import com.lauraalvarez.movehabits.ui.widgets.WorkoutTypeDialog
@@ -79,7 +78,7 @@ fun Workouts(
         MoveHabitsButton(
             Modifier
                 .fillMaxWidth()
-                .height(50.dp), stringResource(R.string.login_in_text), true
+                .height(50.dp), stringResource(R.string.add_text), true
         ) {
             onAddWorkout()
         }

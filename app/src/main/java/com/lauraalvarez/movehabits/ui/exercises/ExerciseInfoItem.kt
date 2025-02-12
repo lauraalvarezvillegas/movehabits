@@ -83,6 +83,7 @@ fun ExerciseInfoItem(exercise: Exercise, onAddExercise: (Exercise) -> Unit) {
 }
 
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun PreviewExerciseInfoItem() {
@@ -90,11 +91,11 @@ fun PreviewExerciseInfoItem() {
         exercise = Exercise(
             exerciseId = 1,
             exercisename = "Sentadilla",
-            type = ExerciseType.STRENGTH,
+            type = "Fuerza",
             classification = ExerciseClassification.LOWER_BODY,
             img = "https://firebasestorage.googleapis.com/v0/b/movehabit-lav.appspot.com/o/Tren%20inferior%2FSentadillabarra.png?alt=media&token=b66f208b-981f-41f4-afb4-1023975156e1"
         ),
         onAddExercise = {}
     )
-}
+}*/
 

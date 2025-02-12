@@ -12,4 +12,5 @@ enum class ExerciseType(private val stringResId: Int) {
     fun getDisplayName(context: Context): String {
         return context.getString(stringResId)
     }
+
 }

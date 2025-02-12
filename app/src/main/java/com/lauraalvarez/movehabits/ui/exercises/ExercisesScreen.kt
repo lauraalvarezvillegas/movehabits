@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lauraalvarez.movehabits.R
@@ -137,7 +136,7 @@ fun Exercises(
 
         if(selectedClassification?.equals(ExerciseClassification.NONE) == false) { // if type == upper or type == lower -> filter exercises
             filteredExercises = selectedClassification?.let { classification ->
-                exercises.filter { it.classification == classification }
+                exercises.filter { it.classification == classification.getDisplayName(LocalContext.current) }
             } ?: exercises
 
         }
@@ -155,7 +154,7 @@ fun Exercises(
     }
 }
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun ExercisesScreenPreview() {
@@ -189,5 +188,5 @@ fun ExercisesScreenPreview() {
         exercises = sampleExercises,
         onAddExercise = {}
     )
-}
+}*/
 

@@ -70,7 +70,7 @@
     <!-- Workout Exercise Item  -->
     <string name="sets_text">Series :</string>
     <string name="reps_text">Repeticiones :</string>
-    <string name="weight_text">Peso :</string>
+    <string name="weight_text">Peso(kg) :</string>
     <string name="kg_text">kg</string>
 
 
@@ -80,14 +80,18 @@
 
 
     <!-- Descriptions -->
+    <string name="button_description">Botón</string>
     <string name="strength_training_icon">Icono de entrenamiento de fuerza</string>
     <string name="cardio_training_icon">Icono de entrenamiento cardiovascular</string>
     <string name="finished_workout_icon">Icono de entrenamiento finalizado</string>
     <string name="add_exercise_icon">Icono de añadir ejercicio</string>
-    <string name="exercise_type_list_icon">Icono de desplegar lista de opciones de tipo de ejercicio</string>
-
     <string name="delete_icon">Eliminar ejercicio. Botón</string>
     <string name="img_icon">Imagen de ejercicio:</string>
+    <string name="add_one_button">Añadir 1</string>
+    <string name="subtract_one_button">Restar 1</string>
+
+
+
 
 
 

@@ -154,39 +154,4 @@ fun Exercises(
     }
 }
 
-/*
-@Preview(showBackground = true)
-@Composable
-fun ExercisesScreenPreview() {
-    val sampleExercises = listOf(
-        Exercise(
-            exerciseId = 1,
-            exercisename = "Sentadilla",
-            type = ExerciseType.STRENGTH,
-            classification = ExerciseClassification.LOWER_BODY,
-            img = "https://example.com/squat.png"
-        ),
-        Exercise(
-            exerciseId = 2,
-            exercisename = "Press de Banca",
-            type = ExerciseType.STRENGTH,
-            classification = ExerciseClassification.UPPER_BODY,
-            img = "https://example.com/benchpress.png"
-        ),
-        Exercise(
-            exerciseId = 3,
-            exercisename = "Biceps",
-            type = ExerciseType.STRENGTH,
-            classification = ExerciseClassification.UPPER_BODY,
-            img = "https://example.com/running.png"
-        )
-    )
-
-    Exercises(
-        type = ExerciseType.STRENGTH,
-        modifier = Modifier.fillMaxSize(),
-        exercises = sampleExercises,
-        onAddExercise = {}
-    )
-}*/
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
@@ -51,11 +52,11 @@ fun ExercisesScreen(type: ExerciseType, navController: NavController) {
 
     val typeName = type.getDisplayName(LocalContext.current)
     var showDialog by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(false) } // Estado de carga
 
     LaunchedEffect(type.getDisplayName(LocalContext.current)) {
         exercisesViewModel.getExercises(typeName)
     }
-
 
     Box(
         modifier = Modifier
@@ -71,7 +72,6 @@ fun ExercisesScreen(type: ExerciseType, navController: NavController) {
                 showDialog = true
             }
         )
-
     }
 
     val coroutineScope = rememberCoroutineScope()
@@ -82,7 +82,9 @@ fun ExercisesScreen(type: ExerciseType, navController: NavController) {
                 it.exercisename,
                 onDismiss = { showDialog = false },
                 onConfirm = { sets, reps, weight ->
-                    //build workoutexercise object and save at data store
+                    // Muestra el loading
+                    isLoading = true
+
                     val workoutExercise = WorkoutExercise(
                         "",
                         it.exercisename,
@@ -92,24 +94,45 @@ fun ExercisesScreen(type: ExerciseType, navController: NavController) {
                         0,
                         0,
                         false
-
                     )
                     exercisesViewModel.storeNewWorkoutExercise(workoutExercise)
+
+                    // launch the coroutine to wait for isFromAddExercise to be true
                     coroutineScope.launch {
                         workoutViewModel.setFromAddExercise(true)
-                        val isFromAddExercise =
-                            workoutViewModel.userPreferences.getFromAddExercise()
-                        if (isFromAddExercise) {
-                            navController.popBackStack()
-                        }
-                    }
+                        showDialog = false
 
+                        // waits until isFromAddExercise its true
+                        while (true) {
+                            val isFromAddExercise = workoutViewModel.userPreferences.getFromAddExercise()
+                            if (isFromAddExercise) {
+                                break
+                            }
+                            delay(100)
+                        }
+
+                        isLoading = false
+                        navController.popBackStack()
+                    }
                 }
             )
         }
     }
 
+    if (isLoading) {
+        LoadingIndicator()
+    }
+}
 
+
+@Composable
+fun LoadingIndicator() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
 }
 
 @Composable

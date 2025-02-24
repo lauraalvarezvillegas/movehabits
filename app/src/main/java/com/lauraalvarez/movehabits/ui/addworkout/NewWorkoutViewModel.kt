@@ -1,14 +1,10 @@
 package com.lauraalvarez.movehabits.ui.addworkout
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lauraalvarez.movehabits.data.model.WorkoutExercise
 import com.lauraalvarez.movehabits.data.preferences.UserPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -45,6 +41,10 @@ class NewWorkoutViewModel @Inject constructor(
 
             userPreferences.fromAddEercise.collect { value -> _fromAddExercise.value = value }
         }
+    }
+
+    fun deleteExercise(exercise: WorkoutExercise) {
+        _exercises.value = _exercises.value.filter { it != exercise }
     }
 
     fun setSelectedDate(date: LocalDate?) {

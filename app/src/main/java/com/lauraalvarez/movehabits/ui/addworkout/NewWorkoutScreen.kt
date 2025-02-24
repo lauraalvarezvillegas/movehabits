@@ -46,6 +46,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,6 +55,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Timestamp
+import com.lauraalvarez.movehabits.data.model.WorkoutExercise
 import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
 import com.lauraalvarez.movehabits.ui.navigation.Exercises
 import com.lauraalvarez.movehabits.ui.widgets.DatePickerMaterialTheme
@@ -254,13 +256,13 @@ fun NewWorkoutScreen(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
-                        ExerciseAtWorkoutItem(exercise, {})
+                        ExerciseAtWorkoutItem(exercise, { newWorkoutViewModel.deleteExercise(exercise) })
                     }
                 }
             }
         }
 
-        if(selectedDate != null && selectedTime != null && exercises.isNotEmpty()) {
+        if (selectedDate != null && selectedTime != null && exercises.isNotEmpty()) {
             isAddWorkoutButtonEnabled = true
         }
 
@@ -277,7 +279,7 @@ fun NewWorkoutScreen(
                     .height(50.dp),
                 stringResource(R.string.store_workout_text),
                 isAddWorkoutButtonEnabled,
-                onButtonClicked = {
+                onButtonClicked = { //TODO: store at firebase storage
                 }
             )
         }
@@ -348,7 +350,10 @@ fun NewWorkoutScreen(
     }
 
 
+
 }
+
+
 
 
 @Composable
@@ -394,7 +399,7 @@ fun TopBar(onCloseClick: () -> Unit, selectedWorkoutType: ExerciseType) {
             }
 
             Text(
-                text = "Tipo: ${selectedWorkoutType.name}",
+                text = "Tipo: ${selectedWorkoutType.getDisplayName(LocalContext.current)}",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .fillMaxWidth()

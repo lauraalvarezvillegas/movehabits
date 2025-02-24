@@ -69,8 +69,8 @@ fun NewWorkoutScreen(
     navController: NavController
 ) {
     val newWorkoutViewModel: NewWorkoutViewModel = hiltViewModel()
-    var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
-    var selectedTime by remember { mutableStateOf<LocalTime?>(null) }
+    val selectedDate by newWorkoutViewModel.selectedDate.collectAsState()
+    val selectedTime by newWorkoutViewModel.selectedTime.collectAsState()
 
 
     var showDatePickerDialog by remember { mutableStateOf(false) }
@@ -273,15 +273,15 @@ fun NewWorkoutScreen(
                         ), onClick = {
                     val selectedMillis = datePickerState.selectedDateMillis
                     if (selectedMillis != null) {
-                        val selected = LocalDate(datePickerState.selectedDateMillis)
-
+                        val selected = LocalDate(selectedMillis)
                         if (!selected.isBefore(today) || selected.isEqual(today)) {
-                            selectedDate = selected
-                            selectedTime = null
+                            newWorkoutViewModel.setSelectedDate(selected)
+                            newWorkoutViewModel.setSelectedTime(null)
                             showDatePickerDialog = false
                         }
                     }
-                }) {
+                }
+                ) {
                     Text(text = stringResource(R.string.confirm_text))
                 }
             }
@@ -307,7 +307,7 @@ fun NewWorkoutScreen(
                             ),
                     onClick = {
                         if (isValid) {
-                            selectedTime = LocalTime(selectedHour, selectedMinute)
+                            newWorkoutViewModel.setSelectedTime(LocalTime(selectedHour, selectedMinute))
                             showTimePickerDialog = false
                         }
                     },

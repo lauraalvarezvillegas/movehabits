@@ -1,13 +1,19 @@
 package com.lauraalvarez.movehabits.ui.addworkout
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lauraalvarez.movehabits.data.model.WorkoutExercise
 import com.lauraalvarez.movehabits.data.preferences.UserPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.joda.time.LocalDate
+import org.joda.time.LocalTime
 import javax.inject.Inject
 
 
@@ -15,6 +21,12 @@ import javax.inject.Inject
 class NewWorkoutViewModel @Inject constructor(
     val userPreferences: UserPreferences
 ) : ViewModel() {
+
+    private val _selectedDate = MutableStateFlow<LocalDate?>(null)
+    val selectedDate: StateFlow<LocalDate?> = _selectedDate
+
+    private val _selectedTime = MutableStateFlow<LocalTime?>(null)
+    val selectedTime: StateFlow<LocalTime?> = _selectedTime
 
     private val _exercises = MutableStateFlow<List<WorkoutExercise>>(emptyList())
     val exercises: StateFlow<List<WorkoutExercise>> = _exercises
@@ -33,6 +45,17 @@ class NewWorkoutViewModel @Inject constructor(
 
             userPreferences.fromAddEercise.collect { value -> _fromAddExercise.value = value }
         }
+    }
+
+    fun setSelectedDate(date: LocalDate?) {
+        _selectedDate.value = date
+        if (date == null) {
+            _selectedTime.value = null
+        }
+    }
+
+    fun setSelectedTime(time: LocalTime?) {
+        _selectedTime.value = time
     }
 
     fun addExercise(exercise: WorkoutExercise) {

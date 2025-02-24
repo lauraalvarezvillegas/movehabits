@@ -20,12 +20,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lauraalvarez.movehabits.R
-import com.lauraalvarez.movehabits.data.enums.ExerciseClassification
-import com.lauraalvarez.movehabits.data.enums.ExerciseType
 import com.lauraalvarez.movehabits.data.model.Exercise
 import coil.compose.AsyncImage
 

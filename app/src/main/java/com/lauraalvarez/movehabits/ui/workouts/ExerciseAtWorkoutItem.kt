@@ -36,6 +36,7 @@ fun ExerciseAtWorkoutItem(exercise: WorkoutExercise, onDeleteButtonClicked: () -
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         shape = RoundedCornerShape(26.dp),
         modifier = Modifier
+            .padding(vertical = 15.dp)
             .width(350.dp)
             .border(
                 1.dp,

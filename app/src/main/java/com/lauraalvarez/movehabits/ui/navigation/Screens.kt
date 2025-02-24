@@ -22,7 +22,7 @@ object Goal
 object Profile
 
 @Serializable
-data class NewWorkout(val type: ExerciseType)
+data class NewWorkout(val type: ExerciseType, val fromAddExercise: Boolean? = false)
 
 @Serializable
 data class Exercises(val type: ExerciseType)

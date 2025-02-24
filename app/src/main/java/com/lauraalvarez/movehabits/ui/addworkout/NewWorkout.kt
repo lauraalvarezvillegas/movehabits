@@ -42,17 +42,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Timestamp
-import com.lauraalvarez.movehabits.data.model.WorkoutExercise
 import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
 import com.lauraalvarez.movehabits.ui.navigation.Exercises
 import com.lauraalvarez.movehabits.ui.widgets.DatePickerMaterialTheme
@@ -63,7 +64,11 @@ import org.joda.time.DateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewWorkoutScreen(selectedWorkoutType: ExerciseType, navController: NavController) {
+fun NewWorkoutScreen(
+    selectedWorkoutType: ExerciseType,
+    navController: NavController
+) {
+    val newWorkoutViewModel: NewWorkoutViewModel = hiltViewModel()
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
     var selectedTime by remember { mutableStateOf<LocalTime?>(null) }
 
@@ -75,9 +80,18 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType, navController: NavContro
     val currentYear = DateTime.now().year
     val todayMillis = DateTime().withTimeAtStartOfDay().millis
 
-    var exercises by remember { mutableStateOf<List<WorkoutExercise>>(emptyList()) }
+    val exercises by newWorkoutViewModel.exercises.collectAsState()
+    val fromAddExercise by newWorkoutViewModel.fromAddExercise.collectAsState()
+    val newExerciseWorkout by newWorkoutViewModel.newExerciseWorkout.collectAsState()
 
-
+    LaunchedEffect(fromAddExercise, newExerciseWorkout) {
+        newWorkoutViewModel.getFromAddExercise()
+        if (fromAddExercise && newExerciseWorkout != null) {
+            newWorkoutViewModel.addExercise(newExerciseWorkout!!)
+            newWorkoutViewModel.clearNewExerciseWorkout()
+            newWorkoutViewModel.setFromAddExercise(false)
+        }
+    }
 
     val datePickerState = rememberDatePickerState(
         initialDisplayedMonthMillis = todayMillis,
@@ -129,7 +143,7 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType, navController: NavContro
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TopBar(
-                onCloseClick = {navController.popBackStack() },
+                onCloseClick = { navController.popBackStack() },
                 selectedWorkoutType = selectedWorkoutType
             )
 
@@ -221,9 +235,10 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType, navController: NavContro
                         .padding(start = 55.dp),
                     stringResource(R.string.add_text),
                     true,
-                     onButtonClicked = { navController.navigate(Exercises(ExerciseType.STRENGTH))
+                    onButtonClicked = {
+                        navController.navigate(Exercises(ExerciseType.STRENGTH))
 
-                     }
+                    }
                 )
 
 
@@ -232,13 +247,17 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType, navController: NavContro
             LazyColumn(
                 modifier = Modifier
                     .padding(top = 16.dp, bottom = 16.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(exercises) {exercise->
-                    ExerciseAtWorkoutItem(exercise, {})
-
+                items(exercises) { exercise ->
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ExerciseAtWorkoutItem(exercise, {})
+                    }
                 }
-
             }
         }
     }
@@ -302,14 +321,8 @@ fun NewWorkoutScreen(selectedWorkoutType: ExerciseType, navController: NavContro
         }
     }
 
-    fun onAddExerciseClicked(newExercise: WorkoutExercise) {
-        exercises = exercises + newExercise
-    }
-
 
 }
-
-
 
 
 @Composable
@@ -374,7 +387,10 @@ fun TopBar(onCloseClick: () -> Unit, selectedWorkoutType: ExerciseType) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewWorkoutScreen() {
-    NewWorkoutScreen(selectedWorkoutType = ExerciseType.STRENGTH, navController = rememberNavController())
+    NewWorkoutScreen(
+        selectedWorkoutType = ExerciseType.STRENGTH,
+        navController = rememberNavController()
+    )
 }
 
 

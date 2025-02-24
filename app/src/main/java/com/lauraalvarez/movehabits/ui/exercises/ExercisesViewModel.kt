@@ -3,6 +3,8 @@ package com.lauraalvarez.movehabits.ui.exercises
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lauraalvarez.movehabits.data.model.Exercise
+import com.lauraalvarez.movehabits.data.model.WorkoutExercise
+import com.lauraalvarez.movehabits.data.preferences.UserPreferences
 import com.lauraalvarez.movehabits.domain.usecase.GetExerciseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExercisesViewModel @Inject constructor(
+    private val userPreferences: UserPreferences,
     private val getExerciseUseCase: GetExerciseUseCase
 ) : ViewModel() {
 
@@ -23,6 +26,9 @@ class ExercisesViewModel @Inject constructor(
             _exercises.value = getExerciseUseCase.execute(type)
         }
     }
+
+    fun storeNewWorkoutExercise(exercise: WorkoutExercise) =
+        viewModelScope.launch { userPreferences.saveNewExerciseWorkout(exercise) }
 
 
 }

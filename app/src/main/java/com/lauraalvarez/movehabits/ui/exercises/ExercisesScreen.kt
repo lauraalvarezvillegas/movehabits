@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,18 +30,27 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.lauraalvarez.movehabits.R
 import com.lauraalvarez.movehabits.data.enums.ExerciseClassification
 import com.lauraalvarez.movehabits.data.enums.ExerciseType
 import com.lauraalvarez.movehabits.data.model.Exercise
+import com.lauraalvarez.movehabits.data.model.WorkoutExercise
+import com.lauraalvarez.movehabits.ui.addworkout.NewWorkoutViewModel
+import com.lauraalvarez.movehabits.ui.navigation.NewWorkout
+import com.lauraalvarez.movehabits.ui.widgets.SetExerciseDialog
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun ExercisesScreen(type: ExerciseType) {
+fun ExercisesScreen(type: ExerciseType, navController: NavController) {
     val exercisesViewModel: ExercisesViewModel = hiltViewModel()
+    val workoutViewModel: NewWorkoutViewModel = hiltViewModel()
     val exercises by exercisesViewModel.exercises.collectAsState()
     var selectedExercise by remember { mutableStateOf<Exercise?>(null) }
 
-    val typeName= type.getDisplayName(LocalContext.current)
+    val typeName = type.getDisplayName(LocalContext.current)
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(type.getDisplayName(LocalContext.current)) {
         exercisesViewModel.getExercises(typeName)
@@ -58,10 +68,45 @@ fun ExercisesScreen(type: ExerciseType) {
             exercises = exercises,
             onAddExercise = {
                 selectedExercise = it
-                //TODO : Dialog de sets, repeticiones y peso
+                showDialog = true
             }
         )
 
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+
+    if (showDialog) {
+        selectedExercise?.let {
+            SetExerciseDialog(
+                it.exercisename,
+                onDismiss = { showDialog = false },
+                onConfirm = { sets, reps, weight ->
+                    //build workoutexercise object and save at data store
+                    val workoutExercise = WorkoutExercise(
+                        "",
+                        it.exercisename,
+                        sets,
+                        reps,
+                        weight,
+                        0,
+                        0,
+                        false
+
+                    )
+                    exercisesViewModel.storeNewWorkoutExercise(workoutExercise)
+                    coroutineScope.launch {
+                        workoutViewModel.setFromAddExercise(true)
+                        val isFromAddExercise =
+                            workoutViewModel.userPreferences.getFromAddExercise()
+                        if (isFromAddExercise) {
+                            navController.popBackStack()
+                        }
+                    }
+
+                }
+            )
+        }
     }
 
 
@@ -74,7 +119,11 @@ fun Exercises(
     exercises: List<Exercise>,
     onAddExercise: (Exercise) -> Unit
 ) {
-    var selectedClassification by remember { mutableStateOf<ExerciseClassification?>(ExerciseClassification.NONE) }
+    var selectedClassification by remember {
+        mutableStateOf<ExerciseClassification?>(
+            ExerciseClassification.NONE
+        )
+    }
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
 
@@ -134,7 +183,7 @@ fun Exercises(
 
         var filteredExercises = exercises
 
-        if(selectedClassification?.equals(ExerciseClassification.NONE) == false) { // if type == upper or type == lower -> filter exercises
+        if (selectedClassification?.equals(ExerciseClassification.NONE) == false) { // if type == upper or type == lower -> filter exercises
             filteredExercises = selectedClassification?.let { classification ->
                 exercises.filter { it.classification == classification.getDisplayName(LocalContext.current) }
             } ?: exercises

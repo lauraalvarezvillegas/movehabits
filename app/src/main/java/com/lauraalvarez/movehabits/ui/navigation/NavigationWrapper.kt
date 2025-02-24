@@ -80,7 +80,7 @@ fun NavigationWrapper() {
 
             composable<Exercises> { backStackEntry ->
                 val exercises = backStackEntry.toRoute<Exercises>()
-                ExercisesScreen(type = exercises.type)
+                ExercisesScreen(type = exercises.type, navController)
             }
 
 

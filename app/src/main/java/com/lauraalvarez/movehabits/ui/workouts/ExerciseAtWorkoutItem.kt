@@ -114,6 +114,6 @@ fun ExerciseAtWorkoutItem(exercise: WorkoutExercise, onDeleteButtonClicked: () -
 @Preview(showBackground = true)
 @Composable
 fun PreviewExerciseItem() {
-    ExerciseAtWorkoutItem(WorkoutExercise("", "Curl de biceps", 3, 12, 5, 0, 0, false))
+    ExerciseAtWorkoutItem(WorkoutExercise("", "Curl de biceps", 3, 12, 5.5f, 0, 0, false))
 }
 

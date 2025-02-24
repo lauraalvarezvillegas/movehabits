@@ -40,8 +40,9 @@
     <string name="select_time">Selecciona la hora</string>
     <string name="select_type">Selecciona el tipo:</string>
     <string name="classification_none">Tren inferior / Tren superior</string>
-
     <string name="exercises_text">Ejercicios: </string>
+    <string name="store_workout_text">Guardar entrenamiento</string>
+
 
 
 

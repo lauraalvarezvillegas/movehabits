@@ -75,6 +75,7 @@ fun NewWorkoutScreen(
 
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var showTimePickerDialog by remember { mutableStateOf(false) }
+    var isAddWorkoutButtonEnabled by remember { mutableStateOf(false) }
 
 
     val currentYear = DateTime.now().year
@@ -139,7 +140,9 @@ fun NewWorkoutScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 70.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TopBar(
@@ -214,8 +217,6 @@ fun NewWorkoutScreen(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            //exercise list
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Absolute.Left
@@ -237,15 +238,13 @@ fun NewWorkoutScreen(
                     true,
                     onButtonClicked = {
                         navController.navigate(Exercises(ExerciseType.STRENGTH))
-
                     }
                 )
-
-
             }
 
             LazyColumn(
                 modifier = Modifier
+                    .weight(1f)
                     .padding(top = 16.dp, bottom = 16.dp)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -259,6 +258,28 @@ fun NewWorkoutScreen(
                     }
                 }
             }
+        }
+
+        if(selectedDate != null && selectedTime != null && exercises.isNotEmpty()) {
+            isAddWorkoutButtonEnabled = true
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            MoveHabitsButton(
+                Modifier
+                    .width(220.dp)
+                    .height(50.dp),
+                stringResource(R.string.store_workout_text),
+                isAddWorkoutButtonEnabled,
+                onButtonClicked = {
+                }
+            )
         }
     }
 
@@ -307,7 +328,12 @@ fun NewWorkoutScreen(
                             ),
                     onClick = {
                         if (isValid) {
-                            newWorkoutViewModel.setSelectedTime(LocalTime(selectedHour, selectedMinute))
+                            newWorkoutViewModel.setSelectedTime(
+                                LocalTime(
+                                    selectedHour,
+                                    selectedMinute
+                                )
+                            )
                             showTimePickerDialog = false
                         }
                     },

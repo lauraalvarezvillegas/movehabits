@@ -3,6 +3,7 @@ package com.lauraalvarez.movehabits.ui.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -16,14 +17,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.toRoute
 import com.lauraalvarez.movehabits.R
+import com.lauraalvarez.movehabits.data.preferences.UserPreferences
 import com.lauraalvarez.movehabits.ui.addworkout.NewWorkoutScreen
 import com.lauraalvarez.movehabits.ui.bottombar.CustomBottomBar
 import com.lauraalvarez.movehabits.ui.exercises.ExercisesScreen
 import com.lauraalvarez.movehabits.ui.workouts.WorkoutsScreen
 
 @Composable
-fun NavigationWrapper() {
+fun NavigationWrapper(userPreferences: UserPreferences) {
     val navController = rememberNavController()
+    val isLoggedIn by userPreferences.isLoggedIn.collectAsState(initial = false)
 
     Scaffold(
         bottomBar = {
@@ -46,14 +49,16 @@ fun NavigationWrapper() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Login::class.simpleName!!,
+            startDestination = if (isLoggedIn) Home::class.simpleName!! else Login::class.simpleName!!,
             modifier = Modifier.padding(innerPadding)
         ) {
 
             composable(route = Login::class.simpleName!!) {
                 LoginScreen(
                     loginViewModel = hiltViewModel(),
-                    onNavigateToHome = { navController.navigate(Home::class.simpleName!!) },
+                    onNavigateToHome = { navController.navigate(Home::class.simpleName!!) {
+                        popUpTo(Login::class.simpleName!!) { inclusive = true } //don`t return to login
+                    }},
                     onNavigateToRegister = { navController.navigate(Register::class.simpleName!!) }
                 )
             }

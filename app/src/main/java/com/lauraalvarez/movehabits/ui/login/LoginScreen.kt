@@ -78,7 +78,6 @@ fun Login(
     val errorMessageResId: Int? by loginViewModel.errorKey.observeAsState(null)
     var showDialog by remember { mutableStateOf(false) }
     var showResponseDialog by remember { mutableStateOf(false) }
-    var responseMessage by remember { mutableStateOf("") }
 
 
     val coroutineScope = rememberCoroutineScope()

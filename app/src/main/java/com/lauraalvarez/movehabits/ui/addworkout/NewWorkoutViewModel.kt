@@ -1,12 +1,18 @@
 package com.lauraalvarez.movehabits.ui.addworkout
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lauraalvarez.movehabits.data.model.Workout
 import com.lauraalvarez.movehabits.data.model.WorkoutExercise
 import com.lauraalvarez.movehabits.data.preferences.UserPreferences
+import com.lauraalvarez.movehabits.domain.usecase.AddWorkoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
@@ -15,8 +21,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewWorkoutViewModel @Inject constructor(
-    val userPreferences: UserPreferences
+    val userPreferences: UserPreferences,
+    val addWorkoutUseCase: AddWorkoutUseCase
 ) : ViewModel() {
+
+    private val _userId = MutableLiveData<String?>()
+    val userId: LiveData<String?> = _userId
 
     private val _selectedDate = MutableStateFlow<LocalDate?>(null)
     val selectedDate: StateFlow<LocalDate?> = _selectedDate
@@ -35,6 +45,9 @@ class NewWorkoutViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+
+            _userId.value = userPreferences.userId.firstOrNull()
+
             userPreferences.newExerciseWorkout.collect { exercise ->
                 _newExerciseWorkout.value = exercise
             }
@@ -81,4 +94,11 @@ class NewWorkoutViewModel @Inject constructor(
             _newExerciseWorkout.value = null
         }
     }
+
+    fun addWorkout(workout: Workout) {
+        viewModelScope.launch {
+            addWorkoutUseCase.execute(workout)
+        }
+    }
+
 }

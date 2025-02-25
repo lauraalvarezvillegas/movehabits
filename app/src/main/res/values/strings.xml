@@ -75,9 +75,9 @@
     <string name="weight_kg_text">Peso(kg):</string>
     <string name="kg_text">kg</string>
 
-
-
-
+    <!-- Error dialog  -->
+    <string name="error_title_text">Ha ocurrido un error</string>
+    <string name="error_adding_workourt_text">No se pudo añadir el entrenamiento.</string>
 
 
 

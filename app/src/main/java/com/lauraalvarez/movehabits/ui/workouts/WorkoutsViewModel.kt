@@ -15,7 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class WorkoutsViewModel @Inject constructor(
     private val getWorkoutsUseCase: GetWorkoutsUseCase,
-    private val addWorkoutUseCase: AddWorkoutUseCase,
     private val userPreferences: UserPreferences
 ) : ViewModel() {
 
@@ -41,10 +40,5 @@ class WorkoutsViewModel @Inject constructor(
         }
     }
 
-    fun addWorkout(workout: Workout) {
-        viewModelScope.launch {
-            addWorkoutUseCase.execute(workout)
-        }
-    }
 }
 

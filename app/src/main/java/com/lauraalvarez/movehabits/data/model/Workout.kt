@@ -11,7 +11,7 @@ data class Workout(
     val totalDurationSec: Int = 0,
     val restSec: Int = 0,
     val completed: Boolean = false,
-    val exercises: List<Exercise> = emptyList()
+    val exercises: List<WorkoutExercise> = emptyList()
 ) {
 
     constructor() : this(

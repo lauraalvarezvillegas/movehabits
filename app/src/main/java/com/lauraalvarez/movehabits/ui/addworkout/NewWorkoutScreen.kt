@@ -44,6 +44,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -55,10 +56,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Timestamp
+import com.lauraalvarez.movehabits.data.model.Workout
 import com.lauraalvarez.movehabits.data.model.WorkoutExercise
 import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
 import com.lauraalvarez.movehabits.ui.navigation.Exercises
 import com.lauraalvarez.movehabits.ui.widgets.DatePickerMaterialTheme
+import com.lauraalvarez.movehabits.ui.widgets.ErrorDialog
 import com.lauraalvarez.movehabits.ui.widgets.TimePickerMaterialTheme
 import com.lauraalvarez.movehabits.ui.workouts.ExerciseAtWorkoutItem
 import com.lauraalvarez.movehabits.utils.DateTimeUtils
@@ -71,10 +74,12 @@ fun NewWorkoutScreen(
     navController: NavController
 ) {
     val newWorkoutViewModel: NewWorkoutViewModel = hiltViewModel()
+    val userId by newWorkoutViewModel.userId.observeAsState()
     val selectedDate by newWorkoutViewModel.selectedDate.collectAsState()
     val selectedTime by newWorkoutViewModel.selectedTime.collectAsState()
 
 
+    var showErrorDialog by remember { mutableStateOf(false) }
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var showTimePickerDialog by remember { mutableStateOf(false) }
     var isAddWorkoutButtonEnabled by remember { mutableStateOf(false) }
@@ -83,7 +88,7 @@ fun NewWorkoutScreen(
     val currentYear = DateTime.now().year
     val todayMillis = DateTime().withTimeAtStartOfDay().millis
 
-    val exercises by newWorkoutViewModel.exercises.collectAsState()
+    val exercises by newWorkoutViewModel.exercises.collectAsState(emptyList())
     val fromAddExercise by newWorkoutViewModel.fromAddExercise.collectAsState()
     val newExerciseWorkout by newWorkoutViewModel.newExerciseWorkout.collectAsState()
 
@@ -256,7 +261,9 @@ fun NewWorkoutScreen(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
-                        ExerciseAtWorkoutItem(exercise, { newWorkoutViewModel.deleteExercise(exercise) })
+                        ExerciseAtWorkoutItem(
+                            exercise,
+                            { newWorkoutViewModel.deleteExercise(exercise) })
                     }
                 }
             }
@@ -279,10 +286,37 @@ fun NewWorkoutScreen(
                     .height(50.dp),
                 stringResource(R.string.store_workout_text),
                 isAddWorkoutButtonEnabled,
-                onButtonClicked = { //TODO: store at firebase storage
+                onButtonClicked = {
+                    val dateTime = selectedDate?.toDateTime(selectedTime) ?: DateTime.now()
+                    val newWorkout = userId?.let {
+                        Workout(
+                            userId = it,
+                            type = selectedWorkoutType,
+                            dateTime = Timestamp(dateTime.toDate()),
+                            totalDurationSec = 0,
+                            restSec = 0,
+                            completed = false,
+                            exercises = exercises
+                        )
+                    }
+                    if (newWorkout != null) {
+                        newWorkoutViewModel.addWorkout(newWorkout)
+                        navController.popBackStack()
+                    } else {
+                        showErrorDialog = true
+                    }
                 }
             )
         }
+    }
+
+    if (showErrorDialog) {
+        ErrorDialog(
+            onDismiss = {
+                showErrorDialog = false
+                navController.popBackStack()
+            }
+        )
     }
 
     if (showDatePickerDialog) {
@@ -349,11 +383,12 @@ fun NewWorkoutScreen(
         }
     }
 
+    fun LocalDate.toDateTime(time: LocalTime?): DateTime {
+        return this.toDateTime(time ?: LocalTime(0, 0)) // Si no hay hora, usa medianoche
+    }
 
 
 }
-
-
 
 
 @Composable

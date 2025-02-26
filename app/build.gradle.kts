@@ -79,5 +79,13 @@ dependencies {
 
     implementation(libs.coil)
 
+    //calendar api
+    /*
+    implementation(libs.google.play.services.auth)
+    implementation(libs.google.api.client.android)
+    implementation(libs.google.api.client.gson)
+    implementation(libs.google.auth.library.oauth2.http)
+    implementation(libs.google.api.services.calendar)*/
+
 
 }

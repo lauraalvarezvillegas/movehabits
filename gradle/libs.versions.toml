@@ -19,6 +19,12 @@ crashlytics = "3.0.2"
 datastore = "1.0.0"
 joda-time = "2.12.5"
 coil = "2.4.0"
+google-auth = "21.3.0"
+google-api-client = "1.33.2"
+google-auth-library = "1.21.0"
+google-calendar-api = "v3-rev305-1.25.0"
+
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -48,6 +54,11 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 joda-time = { module = "net.danlew:android.joda", version.ref = "joda-time" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+google-play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "google-auth" }
+google-api-client-android = { module = "com.google.api-client:google-api-client-android", version.ref = "google-api-client" }
+google-api-client-gson = { module = "com.google.api-client:google-api-client-gson", version.ref = "google-api-client" }
+google-auth-library-oauth2-http = { module = "com.google.auth:google-auth-library-oauth2-http", version.ref = "google-auth-library" }
+google-api-services-calendar = { module = "com.google.apis:google-api-services-calendar", version.ref = "google-calendar-api" }
 
 
 [plugins]
@@ -57,6 +68,6 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 hilt-application = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
-googleServices = { id = "com.google.gms.google-services", version.ref = "services"}
-crashlytics = {id = "com.google.firebase.crashlytics", version.ref ="crashlytics" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "services" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
 

@@ -42,9 +42,11 @@
     <string name="classification_none">Tren inferior / Tren superior</string>
     <string name="exercises_text">Ejercicios: </string>
     <string name="store_workout_text">Guardar entrenamiento</string>
+    <string name="type_text">Tipo: </string>
+    <string name="event_title_text">Entrenamiento de  </string>
+    <string name="store_at_calendar"> Guardar en Google Calendar </string>
 
-
-
+    <string name="calendar_error_text"> No se pudo abrir Google Calendar </string>
 
 
     <!-- Firebase Auth Error Messages -->
@@ -78,11 +80,6 @@
     <!-- Error dialog  -->
     <string name="error_title_text">Ha ocurrido un error</string>
     <string name="error_adding_workourt_text">No se pudo añadir el entrenamiento.</string>
-
-
-
-
-
 
     <!-- Descriptions -->
     <string name="button_description">Botón</string>

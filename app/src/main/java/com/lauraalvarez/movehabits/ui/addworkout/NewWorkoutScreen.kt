@@ -1,5 +1,8 @@
 package com.lauraalvarez.movehabits.ui.addworkout
 
+import android.content.Intent
+import android.provider.CalendarContract
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,6 +43,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.LaunchedEffect
@@ -57,7 +62,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Timestamp
 import com.lauraalvarez.movehabits.data.model.Workout
-import com.lauraalvarez.movehabits.data.model.WorkoutExercise
 import com.lauraalvarez.movehabits.ui.layout.MoveHabitsButton
 import com.lauraalvarez.movehabits.ui.navigation.Exercises
 import com.lauraalvarez.movehabits.ui.widgets.DatePickerMaterialTheme
@@ -67,17 +71,19 @@ import com.lauraalvarez.movehabits.ui.workouts.ExerciseAtWorkoutItem
 import com.lauraalvarez.movehabits.utils.DateTimeUtils
 import org.joda.time.DateTime
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewWorkoutScreen(
     selectedWorkoutType: ExerciseType,
     navController: NavController
 ) {
+
+
     val newWorkoutViewModel: NewWorkoutViewModel = hiltViewModel()
     val userId by newWorkoutViewModel.userId.observeAsState()
     val selectedDate by newWorkoutViewModel.selectedDate.collectAsState()
     val selectedTime by newWorkoutViewModel.selectedTime.collectAsState()
-
 
     var showErrorDialog by remember { mutableStateOf(false) }
     var showDatePickerDialog by remember { mutableStateOf(false) }
@@ -91,6 +97,16 @@ fun NewWorkoutScreen(
     val exercises by newWorkoutViewModel.exercises.collectAsState(emptyList())
     val fromAddExercise by newWorkoutViewModel.fromAddExercise.collectAsState()
     val newExerciseWorkout by newWorkoutViewModel.newExerciseWorkout.collectAsState()
+
+    var saveToCalendar by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    val calendarPackage = "com.google.android.calendar"
+    val calendarErrorText = stringResource(R.string.calendar_error_text)
+
+
+    val eventTitle =
+        " ${stringResource(R.string.event_title_text)} ${selectedWorkoutType.getDisplayName(context)}"
 
     LaunchedEffect(fromAddExercise, newExerciseWorkout) {
         newWorkoutViewModel.getFromAddExercise()
@@ -157,7 +173,25 @@ fun NewWorkoutScreen(
                 selectedWorkoutType = selectedWorkoutType
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(vertical = 8.dp)
+            ) {
+                Text(text = stringResource(R.string.store_at_calendar))
+                Spacer(modifier = Modifier.width(8.dp))
+                Switch(
+                    checked = saveToCalendar,
+                    onCheckedChange = { saveToCalendar = it },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = colorResource(R.color.original_blue),
+                        uncheckedThumbColor = Color.Gray,
+                        checkedTrackColor = colorResource(R.color.original_blue).copy(alpha = 0.5f),
+                        uncheckedTrackColor = Color.LightGray
+                    )
+                )
+            }
+
 
             Card(
                 onClick = { showDatePickerDialog = true },
@@ -301,6 +335,19 @@ fun NewWorkoutScreen(
                     }
                     if (newWorkout != null) {
                         newWorkoutViewModel.addWorkout(newWorkout)
+                        if (saveToCalendar) {
+                            val intent = Intent(Intent.ACTION_INSERT).apply {
+                                data = CalendarContract.Events.CONTENT_URI
+                                putExtra(CalendarContract.Events.TITLE, eventTitle)
+                                `package` = calendarPackage
+                            }
+
+                            try {
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                Toast.makeText(context, calendarErrorText, Toast.LENGTH_LONG).show()
+                            }
+                        }
                         navController.popBackStack()
                     } else {
                         showErrorDialog = true
@@ -383,11 +430,6 @@ fun NewWorkoutScreen(
         }
     }
 
-    fun LocalDate.toDateTime(time: LocalTime?): DateTime {
-        return this.toDateTime(time ?: LocalTime(0, 0)) // Si no hay hora, usa medianoche
-    }
-
-
 }
 
 
@@ -434,7 +476,11 @@ fun TopBar(onCloseClick: () -> Unit, selectedWorkoutType: ExerciseType) {
             }
 
             Text(
-                text = "Tipo: ${selectedWorkoutType.getDisplayName(LocalContext.current)}",
+                text = "${stringResource(R.string.type_text)} ${
+                    selectedWorkoutType.getDisplayName(
+                        LocalContext.current
+                    )
+                }",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .fillMaxWidth()

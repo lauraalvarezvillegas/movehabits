@@ -278,7 +278,7 @@ fun NewWorkoutScreen(
                     stringResource(R.string.add_text),
                     true,
                     onButtonClicked = {
-                        navController.navigate(Exercises(ExerciseType.STRENGTH))
+                        navController.navigate(Exercises(selectedWorkoutType))
                     }
                 )
             }

@@ -1,5 +1,6 @@
 package com.lauraalvarez.movehabits.ui.exercises
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,6 +40,7 @@ import com.lauraalvarez.movehabits.data.model.Exercise
 import com.lauraalvarez.movehabits.data.model.WorkoutExercise
 import com.lauraalvarez.movehabits.ui.addworkout.NewWorkoutViewModel
 import com.lauraalvarez.movehabits.ui.navigation.NewWorkout
+import com.lauraalvarez.movehabits.ui.widgets.SetCardioExerciseDialog
 import com.lauraalvarez.movehabits.ui.widgets.SetExerciseDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -52,7 +54,9 @@ fun ExercisesScreen(type: ExerciseType, navController: NavController) {
 
     val typeName = type.getDisplayName(LocalContext.current)
     var showDialog by remember { mutableStateOf(false) }
-    var isLoading by remember { mutableStateOf(false) } // Estado de carga
+
+    var isLoading by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     LaunchedEffect(type.getDisplayName(LocalContext.current)) {
         exercisesViewModel.getExercises(typeName)
@@ -78,44 +82,87 @@ fun ExercisesScreen(type: ExerciseType, navController: NavController) {
 
     if (showDialog) {
         selectedExercise?.let {
-            SetExerciseDialog(
-                it.exercisename,
-                onDismiss = { showDialog = false },
-                onConfirm = { sets, reps, weight ->
-                    // Muestra el loading
-                    isLoading = true
+            if (selectedExercise!!.type == ExerciseType.STRENGTH.getDisplayName(context)) {
+                SetExerciseDialog(
+                    it.exercisename,
+                    onDismiss = { showDialog = false },
+                    onConfirm = { sets, reps, weight ->
+                        // Muestra el loading
+                        isLoading = true
 
-                    val workoutExercise = WorkoutExercise(
-                        "",
-                        it.exercisename,
-                        sets,
-                        reps,
-                        weight,
-                        0,
-                        0,
-                        false
-                    )
-                    exercisesViewModel.storeNewWorkoutExercise(workoutExercise)
+                        val workoutExercise = WorkoutExercise(
+                            "",
+                            it.exercisename,
+                            sets,
+                            reps,
+                            weight,
+                            0,
+                            0,
+                            false
+                        )
+                        exercisesViewModel.storeNewWorkoutExercise(workoutExercise)
 
-                    // launch the coroutine to wait for isFromAddExercise to be true
-                    coroutineScope.launch {
-                        workoutViewModel.setFromAddExercise(true)
-                        showDialog = false
+                        // launch the coroutine to wait for isFromAddExercise to be true
+                        coroutineScope.launch {
+                            workoutViewModel.setFromAddExercise(true)
+                            showDialog = false
 
-                        // waits until isFromAddExercise its true
-                        while (true) {
-                            val isFromAddExercise = workoutViewModel.userPreferences.getFromAddExercise()
-                            if (isFromAddExercise) {
-                                break
+                            // waits until isFromAddExercise its true
+                            while (true) {
+                                val isFromAddExercise =
+                                    workoutViewModel.userPreferences.getFromAddExercise()
+                                if (isFromAddExercise) {
+                                    break
+                                }
+                                delay(100)
                             }
-                            delay(100)
+
+                            isLoading = false
+                            navController.popBackStack()
+                        }
+                    }
+                )
+            } else {
+                SetCardioExerciseDialog(it.exercisename,
+                    onDismiss = { showDialog = false },
+                    onConfirm = { mins ->
+                        isLoading = true
+
+                        val workoutExercise = WorkoutExercise(
+                            "",
+                            it.exercisename,
+                            mins,
+                            0,
+                            0f,
+                            0,
+                            0,
+                            false
+                        )
+                        exercisesViewModel.storeNewWorkoutExercise(workoutExercise)
+
+                        // launch the coroutine to wait for isFromAddExercise to be true
+                        coroutineScope.launch {
+                            workoutViewModel.setFromAddExercise(true)
+                            showDialog = false
+
+                            // waits until isFromAddExercise its true
+                            while (true) {
+                                val isFromAddExercise =
+                                    workoutViewModel.userPreferences.getFromAddExercise()
+                                if (isFromAddExercise) {
+                                    break
+                                }
+                                delay(100)
+                            }
+
+                            isLoading = false
+                            navController.popBackStack()
                         }
 
-                        isLoading = false
-                        navController.popBackStack()
                     }
-                }
-            )
+                )
+            }
+
         }
     }
 
